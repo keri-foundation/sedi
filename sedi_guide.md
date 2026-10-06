@@ -139,6 +139,48 @@ ReplaceSchema = \
 }
 ```
 
+#### Example Replacement ACDC
+
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAANu.',
+  't': 'acm',
+  'd': 'EPF4V1wuieZE15yOoWOsvCm0_1C-I0G7efTmIiUQ5sWa',
+  'u': '0ACY9KcZQQ_FXQdCLG0vODyG',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'rd': 'EH7Rrg0KDFmADQ4BMWp-JXL-HM4trbphW8b7bsbFxVBi',
+  's': 'EPVlX-S-eWERGiXJmb7FcW75I4J08ptQ-jGglq4VRwou',
+  'a': 
+  {
+    'd': 'EFAl_GXl1vxkCYb0vhBkDklrYkut-RePW1meTaib1ZdQ',
+    'u': '0AB36SRUqDVDYq5UulmV5w1v',
+    'i': 'EPvkhZTKfAte3QhfD-O3eKY2dwZqcLQ9OVIVGjT9edmR',
+    'issuedDate': '2020-10-15T00:00:00.000000+00:00',
+    'obsolete': 'EKr8JLtfqWCmHrxO3yu8ocS2n9o0Tlspeaqm9ZOf3FM1'
+  },
+  'e': 
+  {
+    'd': 'EBKQkzURVLRCnEE1OV63JGc88i8P2_f2L5jveyPSVwoB',
+    'u': '0ABxzCU6Wz_mzY2KiB0u4Xgi',
+    'utahAgent': 
+    {
+      'd': 'EF65dodygj3h3e_J2YKai-ILHkbTSo6S-L2BUCcXN2oi',
+      'u': '0ADBRTatQM2Y5NzW9by_ko2L',
+      'n': 'EOD4QiWo1oa6UtiEr456Lu0ba3v1Cmd6qOPoRbAdx2hD',
+      's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+      'o': 'I2I'
+    }
+  },
+  'r': 
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'l': ''
+  }
+}
+
+```
+
 ###  Organizational Unit Schema
 This defines an ACDC that the State's root-of-trust AID or root AID issues to delegate an Organizational Unit AID within the State hierarchy. Typically, an organizational unit is at a department, division, or program level within the State.
 
@@ -223,6 +265,34 @@ UnitSchema = \
   },
   'additionalProperties': False
 }
+```
+
+#### Organizational Unit ACDC Example
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAIn.',
+  't': 'acm',
+  'd': 'EIojbncOpuCoMFWZSutjfkLf5KNu_nbCOsqgFClk3SMK',
+  'u': '0AAxOP-l4O8GZPbv7dQBeNfM',
+  'i': 'EAN4gwVu_a9EDxFn-camF6OoQvZAvi-_FyluyyZFKzs5',
+  'rd': 'EA3Y6LeoyNFjnLS1xZoRQnzX0fWgUw0XjD4IgIf8ZHxD',
+  's': 'EBbOpBe0lP_epHhakeiXdOmeal3leDfLRf0PAItsanoQ',
+  'a': 
+  {
+    'd': 'EHydQsy-4di85pJaiPqVN9_APpLtU15QXcmVFEN2FQE-',
+    'u': '0AAk4UxXJc8mbqWSdtAPkK6w',
+    'i': 'EMrUfTuv8j3vBVAgPSlDi1D_o35F5uwsIAWjBatLhK9E',
+    'issuedDate': '2020-08-01T00:00:00.000000+00:00',
+    'unit': 'SediProgramOffice'
+  },
+  'r': 
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'l': ''
+  }
+}
+
 ```
 
 ###  Issuing Agent Schema
@@ -365,6 +435,52 @@ AgentSchema = \
   'additionalProperties': False
 }
 
+```
+
+#### Issuing Agent ACDC Example
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAO9.',
+  't': 'acm',
+  'd': 'EOD4QiWo1oa6UtiEr456Lu0ba3v1Cmd6qOPoRbAdx2hD',
+  'u': '0ACpkR3a0WoJk8BHz4M6aZVo',
+  'i': 'EMrUfTuv8j3vBVAgPSlDi1D_o35F5uwsIAWjBatLhK9E',
+  'rd': 'EEy3daQxc9NrgzA1V7KjgOqLF_te2gs2-sYElTHsPzYE',
+  's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+  'a': 
+  {
+    'd': 'EFPQAD6XLlU9bnNPMWfjl1Q-Rf20Jwoip_1lkp8XGKKt',
+    'u': '0ADtdKN8DlnUKUFDN47QKfNj',
+    'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+    'issuedDate': '2020-08-01T00:00:00.000000+00:00',
+    'role': 'SediIssuingAgent',
+    'name': 
+    {
+      'd': 'EJj1BPhB8uGFLA8QtNjNJ9MXJ8fvOliIWj5w7YLzReWI',
+      'u': '0AC0eUUAKHVXdJMDVXtx1yS3',
+      'value': 'Susan Park'
+    }
+  },
+  'e': 
+  {
+    'd': 'EIZC3vk0dgDvZNV3Vf1z3mav0HkMbGHq0vxm7NcbC6WP',
+    'u': '0AB4w_WXy8JmoUebF1aEnOD_',
+    'orgUnit': 
+    {
+      'd': 'ENZvB2t1Tit1Z2PSSebS70IKEq33JynJrWK-rjR_cSMA',
+      'u': '0ABl8aVsQRgBVSWnMQcwgDQ7',
+      'n': 'EIojbncOpuCoMFWZSutjfkLf5KNu_nbCOsqgFClk3SMK',
+      's': 'EBbOpBe0lP_epHhakeiXdOmeal3leDfLRf0PAItsanoQ',
+      'o': 'DI2I'
+     }
+  },
+  'r': 
+  {
+     'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+     'l': ''
+  }
+}
 ```
 
 ### Core Identity Schema
@@ -749,4 +865,98 @@ CoreSchema = \
 
 ```
 
-## SEDI ACDC Examples
+#### Core Identity ACDC Example
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAfN.',
+  't': 'acm',
+  'd': 'EGsPyGCyHtDSWP61rVsRh3F8qooP_jrX6qPHqHn7-FOg',
+  'u': '0ABQNZNkD1y0W4mglDB4ei5Y',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'rd': 'EDOfxmEeOsWdi5ZQyuy98W4s15vmV1RWVFuqm4GZflTn',
+  's': 'EN0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY-',
+  'a': 
+  {
+    'd': 'EPIuMf4tkzdqVMSuq59rBD14LZpmFtFjhnh8Io1BWdbt',
+    'u': '0ACd8yXBMGBLNDwr-MMgtris',
+    'i': 'EDB8gKNwzurf33pV2hsyGR9XFOmitDhc0LUzDamcU2JR',
+    'rd': 'ELUW5D0X0pMFM30ZHZKB997lad86PISushrKkKzlhQrl',
+    'primary': True,
+    'givenName': 
+    {
+      'd': 'EBu_EdUcstZq6woZ7NMe2pyU7jjcQOdC9w1ryHa1P_Sq',
+      'u': '0ADGYtYEzEdGpaq_sDXwamDm',
+      'value': 'Guy'
+    },
+    'middleName': 
+    {
+      'd': 'EOhalIHhb5ZbrJZ5SMY_vWBj2ds_z9W8mJ3j-FTjgSUz',
+      'u': '0ACEZIR6pk97xr2cy-gBdod4',
+      'value': 'Marty McFly'
+    },
+    'familyName': 
+    {
+      'd': 'EDBg78wYuNEQkcv-XciKFkxDQmRvIeTsXfjVMJLtUjYW',
+      'u': '0ACUdqI4OVtXDL5BBO13QdrJ',
+      'value': 'Brown'
+    },
+    'nameSuffix': 
+    {
+      'd': 'EFDPwXKE-3wg-WTUVu4GWfMeu4bj8rGNkvdFrMo4Ja4N',
+      'u': '0ACXabyEAzJ1U-4qOek3adv5',
+      'value': 'Jr'
+    },
+    'birthDate': 
+    {
+      'd': 'EMGKn6dwPJMd79vWaGEv7OlCQQ0oGd0nt0fRqBfz1ZyA',
+      'u': '0ABR4UtpgSSmCSVF1eNJ6joz',
+      'value': '2002-08-22T00:00:00.000000+00:00'
+    },
+    'facialImageProof': 
+    {
+      'd': 'EInFQsE3pfRWQp3KrpH91f7YMCR2wslrTOTKL5SF6_E7',
+      'u': '0ABqxMB1vXX4RL4tFUOLzn8y',
+      'value': 'EIQw_2CqmmC96YYUFXTW8XSkLQU2-v9bDCyItazmKhTW'
+    },
+    'legalPresenceStatus': 
+    {
+      'd': 'EMfOp3-Dd1ZXSDUHNWE4ohAsU0Qp8tfQV_gUYKSJE7-Q',
+      'u': '0AAvTJo84OMiipKf_90mn7bZ',
+      'value': 'citizen'
+    },
+    'issuedDate': 
+    {
+      'd': 'EFkQuDu6twqFQ3GdSpK-jxKRYsxxCx-iSbh9RMbTbIsE',
+      'u': '0ACqPN2zhcII6TVGRKYC1ckJ',
+      'value': '2020-08-22T00:00:00.000000+00:00'
+    },
+    'expirationDate': 
+    {
+      'd': 'EOjYb0hwGBe1rA0Ui8foLMoCu5lItuhnodomghuyY4r9',
+      'u': '0AAfMYErqhjBCf4cgG5huzT2',
+      'value': '2028-09-01T00:00:00.000000+00:00'
+    }
+  },
+  'e': 
+  {
+    'd': 'EFwdv1MuJAVYnyuhee0kAjDIpF44oFn5oFo9xoVwtId1',
+    'u': '0AADjz761fupJiCvj4GWFBfg',
+    'utahAgent': 
+    {
+      'd': 'EIh9Bz0kGwGyfDbDe42W1zA9Ukj2DuH-95eebY57ctI6',
+      'u': '0AAsHaHfgfNEaRuRwI1Y77ry',
+      'n': 'EOD4QiWo1oa6UtiEr456Lu0ba3v1Cmd6qOPoRbAdx2hD',
+      's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+      'o': 'DI2I'
+    }
+  },
+  'r': 
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 'l': ''
+  }
+}
+
+```
+
+## SEDI ACDC Usage Examples
