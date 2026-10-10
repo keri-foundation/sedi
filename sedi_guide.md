@@ -29,7 +29,10 @@ The following table provides the schema ID  `$id` field and a description. ACDCs
 | EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v | SEDI Issuing Agent Authority Delegation |
 | N0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY- | SEDI Citizen Core Identity Attributes|
 | EH5hn7CbtDFxhS3IKioC8P-e4YyZoxqzhRpr4X_e32BD | SEDI Citizen Residence Address Attributes|
-|  | SEDI Citizen Age Threshold Attributes|
+| EPqXrwPT6b0_KghrrMuIdmuD68Aytv1XK6jU86EumgJV | SEDI Citizen Age Threshold Attributes|
+| EKuGAkHNpj5ujsEWQuZFe8bbuSrIOwojUNjgirDtWIAb | SEDI Citizen High Resolution Image Biometric Proof |
+| EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b | SEDI Citizen Guardian Authority Delegation |
+
 
 
 
@@ -809,8 +812,8 @@ CoreSchema = \
     'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 'l': ''
   }
 }
-
 ```
+
 ### Residence Schema
 This defines an ACDC that a State Issuing Agent AID issues to a citizen AID to endorse that citizen's place of residence. 
 
@@ -1178,6 +1181,793 @@ ResidenceSchema = \
 
 ```
 
+
+### Age Schema
+This defines an ACDC that a State Issuing Agent AID issues to a citizen AID to endorse that citizen's age thresholds without disclosing their data of birth. 
+
+```python
+AgeSchemaSaid = 'EPqXrwPT6b0_KghrrMuIdmuD68Aytv1XK6jU86EumgJV'
+AgeSchema = \
+{
+  '$id': 'EPqXrwPT6b0_KghrrMuIdmuD68Aytv1XK6jU86EumgJV',
+  '$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'title': 'SEDI Age Schema',
+  'description': 'SEDI Age JSON Schema for acg ACDC.',
+  'credentialType': 'SEDI_Age_ACDC_acg_message',
+  'version': '0.1.0',
+  'type': 'object',
+  'required': ['v', 'd', 'i', 'rd', 's', 'A', 'e', 'r'],
+  'properties':
+  {
+    'v': {'description': 'ACDC version string', 'type': 'string'},
+    't': {'description': 'Message type', 'type': 'string'},
+    'd': {'description': 'Message SAID', 'type': 'string'},
+    'u': {'description': 'Message UE', 'type': 'string'},
+    'i': {'description': 'Issuer AID', 'type': 'string'},
+    'rd': {'description': 'Registry SAID', 'type': 'string'},
+    's':
+    {
+      'description': 'Schema Section',
+      'oneOf':
+      [
+        {'description': 'Schema Section SAID', 'type': 'string'},
+        {'description': 'Schema Section Detail','type': 'object'}
+      ]
+    },
+    'A':
+    {
+      "description": "Aggregate Section",
+      "oneOf":
+      [
+        { "description": "Aggregate Section AGID", "type": "string"},
+        {
+          "description": "Aggregate Section Detail",
+          "type": "array",
+          "uniqueItems": True,
+          "items":
+          {
+            "anyOf":
+            [
+              {"description": "Aggregate Section AGID", "type": "string"},
+              {
+                "description": "Issuee Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "i"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "i": { "description": "Issuee AID", "type": "string"}
+                    },
+                    "additionalProperties": False
+                  }
+                ]
+              },
+              {
+                'description': 'Issued Date Block',
+                'oneOf':
+                [
+                  {'description': 'Block SAID', 'type': 'string'},
+                  {
+                    'description': 'Block Detail',
+                    'type': 'object',
+                    'required': ['d', 'u', 'issuedDate'],
+                    'properties':
+                    {
+                      'd': {'description': 'Block SAID', 'type': 'string'},
+                      'u': {'description': 'Bock UE', 'type': 'string'},
+                     'issuedDate': {'description': 'Issued Date Value as RFC-3339/ISO-8601 time MBZ', 'type': 'string'},
+                    },
+                    'additionalProperties': False
+                  },
+                ]
+              },
+              {
+                'description': 'Expiration Date Block',
+                'oneOf':
+                [
+                  {'description': 'Block SAID', 'type': 'string'},
+                  {
+                    'description': 'Block Detail',
+                    'type': 'object',
+                    'required': ['d', 'u', 'expirationDate'],
+                    'properties':
+                    {
+                      'd': {'description': 'Block SAID', 'type': 'string'},
+                      'u': {'description': 'Bock UE', 'type': 'string'},
+                      'expirationDate': {'description': 'Expiration Date Value as RFC-3339/ISO-8601 time MBZ', 'type': 'string'},
+                    },
+                    'additionalProperties': False
+                  }
+                ]
+              },
+              {
+                "description": "Over13 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over13"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over13": { "description": "Over13 True if age>=13 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                  },
+                ]
+              },
+              {
+                "description": "Over14 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over14"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over14": { "description": "Over14 True if age>=14 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                },
+                ]
+              },
+              {
+                "description": "Over15 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over15"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over15": { "description": "Over15 True if age>=15 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                  },
+                ]
+              },
+              {
+                "description": "Over16 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over16"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over16": { "description": "Over16 True if age>=16 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                  },
+                ]
+              },
+              {
+                "description": "Over18 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over18"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over18": { "description": "Over18 True if age>=18 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                  },
+                ]
+              },
+              {
+                "description": "Over21 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over21"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over21": { "description": "Over21 True if age>=21 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                  },
+                ]
+              },
+              {
+                "description": "Over40 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over40"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over40": { "description": "Over40 True if age>=40 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                  },
+                ]
+              },
+              {
+                "description": "Over62 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over62"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over62": { "description": "Over65 True if age>=62 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                  },
+                ]
+              },
+              {
+                "description": "Over65 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over65"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over65": { "description": "Over65 True if age>=65 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                  },
+                ]
+              },
+              {
+                "description": "Over67 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over67"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over67": { "description": "Over67 True if age>=67 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                  },
+                ]
+              },
+              {
+                "description": "Over70 Block",
+                "oneOf":
+                [
+                  { "description": "Block SAID", "type": "string"},
+                  {
+                    "description": "Block Detail",
+                    "type": "object",
+                    "required":
+                    [ "d", "u", "over70"],
+                    "properties":
+                    {
+                      "d": {"description": "Block SAID", "type": "string"},
+                      "u": { "description": "Block UE", "type": "string"},
+                      "over70": { "description": "Over70 True if age>=70 else False", "type": "boolean"}
+                    },
+                    "additionalProperties": False
+                  },
+                ]
+              },
+            ]
+          }
+        }
+      ]
+    },
+    'e':
+    {
+      'description': 'Edge Section',
+      'oneOf':
+      [
+        {'description': 'Edge Section SAID', 'type': 'string'},
+        {
+          'description': 'Edge Section Detail',
+          'type': 'object',
+          'required': ['d', 'u', 'coreIdentity'],
+          'properties':
+          {
+            'd': {'description': 'Edge Section SAID', 'type': 'string'},
+            'u': {'description': 'Edge Section UE', 'type': 'string'},
+            'coreIdentity':
+            {
+              'description': 'Core Identity Edge Block',
+              'type': 'object',
+              'required': ['d', 'u', 'n', 's', 'o'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o':
+                {
+                    'description': 'Edge Unary Operator',
+                    'type': 'array',
+                    'items': {'type': 'string'},
+                    'minItems': 1,
+                }
+              },
+              'additionalProperties': False
+            },
+            'utahAgent':
+            {
+              'description': 'Utah Agent Edge Block',
+              'type': 'object',
+              'required': ['n', 's', 'o'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+          },
+          'additionalProperties': False
+        }
+      ]
+    },
+    'r':
+    {
+      'description': 'Rule Section',
+      'oneOf':
+      [
+        {'description': 'Rule Section SAID', 'type': 'string'},
+        {
+          'description': 'Rule Section Detail',
+          'type': 'object',
+          'required': ['d', 'l'],
+          'properties':
+          {
+            'd': {'description': 'Rule Section SAID', 'type': 'string'},
+            'l': {'description': 'Legal Language', 'type': 'string'}
+          },
+        'additionalProperties': False
+        }
+      ]
+    }
+  },
+  'additionalProperties': False
+}
+```
+
+#### Age ACDC Example
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAiO.',
+  't': 'acg',
+  'd': 'ECfZCyLfleF3zA8qsHJ0WZYXW5xyR-aPDC8dl6RfLd27',
+  'u': '0AA-hoK5ewZYxB5hXEMwxq5X',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'rd': 'ED69oluOxaPx6sNYF6w2qklDrOu21WAOHv5NK25D4lUg',
+  's': 'EPqXrwPT6b0_KghrrMuIdmuD68Aytv1XK6jU86EumgJV',
+  'A': 
+  [
+    'EKpXUDp6DObtMdVDmHV4YydNCjUrlfQyxQt88jrxJ88X',
+    {
+      'd': 'EDA6IJUQ__dJgXgYiLfreRLsEm1-5xNqBiOIc5sCFful',
+      'u': '0ACd7KIJHwn_s5kNHDqmQg8t',
+      'i': 'EDB8gKNwzurf33pV2hsyGR9XFOmitDhc0LUzDamcU2JR'
+    },
+    {
+      'd': 'EHFHaihQnDcyQ2Oj_rPhl6-f30RdUrdT9LUni53B0iyl',
+      'u': '0ABQe9skiMkZBj86zvt6gtCY',
+      'issuedDate': '2020-08-22T00:00:00.000000+00:00'
+    },
+    {
+      'd': 'ENP5C_6TsmE_KYx8DAvOtUvlsTB4PwBo8MAUXIEEi0Ck',
+      'u': '0ACnZNwFbDOLXr65EDNIE--9',
+      'expirationDate': '2040-08-31T00:00:00.000000+00:00'
+    },
+    {
+      'd': 'EJdPqE-rEP1NKS4JD_gUhkJOKcQl5OnYbgph8hsxtZtr',
+      'u': '0ABnfpH75cVvRDh0giU6e1mn',
+      'over13': True
+    },
+    {
+      'd': 'EPCejGeNknpUDiLJRaCjRmSeGEzroi1Q0JwRyvJ7xP_V',
+      'u': '0ABn3XBC2e0PtpU3CH_QPBoq',
+      'over14': True
+    },
+    {
+      'd': 'EPfmjyv4bV4Ik52AhOY_ifttEH8rTKveZNZCra3-1fqV',
+      'u': '0AA5N6jFF9uQ_VaROhtsRlTc',
+      'over15': True
+    },
+    {
+      'd': 'EI0E1JC9Bx71cWfVNdYDcKBnfTqpivOc4WVi8h8VS9Qs',
+      'u': '0ABqCfYDquB3XWE4ON2E-3Dv',
+      'over16': True
+    },
+    {
+      'd': 'EBfwq_wksugRyl-ov5BavfsCA1Hl0RKbuOpjbKDi_VdQ',
+      'u': '0ACLo6LtsWstOuJ_fiZHzq_C',
+      'over18': True
+    },
+    {
+      'd': 'EGBj6JpQpsU12XCJqGJPu_JYohubd5kQdvvLN54qUaAN',
+      'u': '0ABeFjLwz7EJTafMWbwNsf9G',
+      'over21': True
+    },
+    {
+      'd': 'EL5jXoUIxAYsWapoisXX9icDUxW3zBnFaWpJ5UYHW7yU',
+      'u': '0ADDHu0RX2Tt_FhLDSznOO_B',
+      'over40': True
+    },
+    {
+      'd': 'EBgZxdd19DGZ4XYpdDfWrTtDF0HNpnkyJNoAXpCkAUWf',
+      'u': '0ADFYGQ5Iz2bLhTEwEsxZ-v9',
+      'over62': False
+    },
+    {
+      'd': 'EBz1eWrprA7WneGEZQ6DZB3iaZIgBWbS7-clMPL_IAnU',
+      'u': '0ABDYKuri5HyMN5_RBFvAVxn',
+      'over65': False
+    },
+    {
+      'd': 'ED1_JpPfZ9pzBpQnJo4ckUhg-Z-TImSp-8mwqzAFQtF9',
+      'u': '0ACoKf8Jwe_NFsFEUOI9scSN',
+      'over67': False
+    },
+    {
+      'd': 'EMVqcI3h7RMznAX9HaJoeyB8sDHhB9bvdcwHjhRPLvQy',
+      'u': '0ADXSX677aGYvS4d5a1u6J2X',
+      'over70': False
+    }
+  ],
+  'e': 
+  {
+    'd': 'EOYHSibcRhHNX_hYm_vBXd1KbDWiVkH5jd7ILEV4QyHV',
+    'u': '0ACyPy93wKHIWAvzu92ooj2c',
+    'coreIdentity': 
+    {
+      'd': 'EJA7mNbo51gVlMGjFceykFSrkxPkykLd0n7yFvUlxd86',
+      'u': '0AAYbJl5lc9BwGOLiIaQVWQ8',
+      'n': 'EGsPyGCyHtDSWP61rVsRh3F8qooP_jrX6qPHqHn7-FOg',
+      's': 'EN0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY-',
+      'o': ['E1E', 'DI1I', 'NI2I']
+    }
+  },
+  'r': 
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'l': ''
+  }
+}
+```
+### High Resolution Facial Image Schema
+This defines an ACDC that a State Issuing Agent AID issues to a citizen AID in order to endorse the proof of a higher-resolution facial image biometric than that provided in their core identity ACDC. This is useful for applications that need a high-resolution facial image as a biometric.
+
+```python
+ImageSchemaSaid = 'EKuGAkHNpj5ujsEWQuZFe8bbuSrIOwojUNjgirDtWIAb'
+ImageSchema = \
+{
+  '$id': 'EKuGAkHNpj5ujsEWQuZFe8bbuSrIOwojUNjgirDtWIAb',
+  '$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'title': 'SEDI High Resolution Facial Image Proof Schema',
+  'description': 'SEDI High Resolution Facial Image Proof JSON Schema for acm ACDC.',
+  'credentialType': 'SEDI_Image_ACDC_acm_message',
+  'version': '0.1.0',
+  'type': 'object',
+  'required': ['v', 'd', 'i', 'rd', 's', 'a', 'e', 'r'],
+  'properties':
+  {
+    'v': {'description': 'ACDC version string', 'type': 'string'},
+    't': {'description': 'Message type', 'type': 'string'},
+    'd': {'description': 'Message SAID', 'type': 'string'},
+    'u': {'description': 'Message UE', 'type': 'string'},
+    'i': {'description': 'Issuer AID', 'type': 'string'},
+    'rd': {'description': 'Registry SAID', 'type': 'string'},
+    's':
+    {
+      'description': 'Schema Section',
+      'oneOf':
+      [
+        {'description': 'Schema Section SAID', 'type': 'string'},
+        {'description': 'Schema Section Detail','type': 'object'}
+      ]
+    },
+    'a':
+    {
+      'description': 'Attribute Section',
+      'oneOf':
+      [
+        {'description': 'Attribute Section SAID','type': 'string'},
+        {
+          'description': 'Attribute Section Detail',
+          'type': 'object',
+          'required':
+          [
+            'd',
+            'u',
+            'i',
+            'issuedDate',
+            'expirationDate',
+            'proof',
+          ],
+          'properties':
+          {
+            'd': {'description': 'Attribute Section SAID', 'type': 'string'},
+            'u': {'description': 'Attribute Section UE', 'type': 'string'},
+            'i': {'description': 'Issuee AID', 'type': 'string'},
+            'rd': {'description': 'Issuee Presentation Registry SAID', 'type': 'string'},
+            'issuedDate':
+            {
+              'description': 'Issued Date Block',
+              'oneOf':
+              [
+                {'description': 'Issued Date SAID', 'type': 'string'},
+                {
+                  'description': 'Issued Date Detail',
+                  'type': 'object',
+                  'required': ['d', 'u', 'value'],
+                  'properties':
+                  {
+                    'd': {'description': 'Block SAID', 'type': 'string'},
+                    'u': {'description': 'Bock UE', 'type': 'string'},
+                    'value': {'description': 'Issued Date Value as RFC-3339/ISO-8601 time MBZ', 'type': 'string'},
+                  },
+                'additionalProperties': False
+                },
+              ]
+            },
+            'expirationDate':
+            {
+              'description': 'Expiration Date Block',
+              'oneOf':
+              [
+                {'description': 'Expiration Date SAID', 'type': 'string'},
+                {
+                  'description': 'Expiration Date Detail',
+                  'type': 'object',
+                  'required': ['d', 'u', 'value'],
+                  'properties':
+                  {
+                    'd': {'description': 'Block SAID', 'type': 'string'},
+                    'u': {'description': 'Bock UE', 'type': 'string'},
+                    'value': {'description': 'Expiration Date Value as RFC-3339/ISO-8601 time MBZ', 'type': 'string'},
+                  },
+                  'additionalProperties': False
+                }
+              ]
+            },
+            'proof':
+            {
+              'description': 'Image Proof Block',
+              'oneOf':
+              [
+                {'description': 'Image Proof Block SAID', 'type': 'string'},
+                {
+                  'description': 'Image Proof Block Detail',
+                  'type': 'object',
+                  'required': ['d', 'u', 'value'],
+                  'properties':
+                  {
+                    'd': {'description': 'Block SAID', 'type': 'string'},
+                    'u': {'description': 'Bock UE', 'type': 'string'},
+                   'value': {'description': 'Image Proof Value', 'type': 'string'},
+                  },
+                  'additionalProperties': False
+                },
+              ]
+            },
+          },
+          'additionalProperties': False
+        }
+      ]
+    },
+    'e':
+    {
+      'description': 'Edge Section',
+      'oneOf':
+      [
+        {'description': 'Edge Section SAID', 'type': 'string'},
+        {
+          'description': 'Edge Section Detail',
+          'type': 'object',
+          'required': ['d', 'u', 'coreIdentity'],
+          'properties':
+          {
+            'd': {'description': 'Edge Section SAID', 'type': 'string'},
+            'u': {'description': 'Edge Section UE', 'type': 'string'},
+            'coreIdentity':
+            {
+              'description': 'Core Identity Edge Block',
+              'type': 'object',
+              'required': ['d', 'u', 'n', 's', 'o'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o':
+                {
+                    'description': 'Edge Unary Operator',
+                    'type': 'array',
+                    'items': {'type': 'string'},
+                    'minItems': 1,
+                }
+              },
+              'additionalProperties': False
+            },
+            'utahAgent':
+            {
+              'description': 'Utah Agent Edge Block',
+              'type': 'object',
+              'required': ['n', 's', 'o'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+          },
+          'additionalProperties': False
+        }
+      ]
+    },
+    'r':
+    {
+      'description': 'Rule Section',
+      'oneOf':
+      [
+        {'description': 'Rule Section SAID', 'type': 'string'},
+        {
+          'description': 'Rule Section Detail',
+          'type': 'object',
+          'required': ['d', 'l'],
+          'properties':
+          {
+            'd': {'description': 'Rule Section SAID', 'type': 'string'},
+            'l': {'description': 'Legal Language', 'type': 'string'}
+          },
+        'additionalProperties': False
+        }
+      ]
+    }
+  },
+  'additionalProperties': False
+}
+```
+
+#### Image ACDC Example
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAATG.',
+  't': 'acm',
+  'd': 'EGXMjXaIb0YMnvahN4i0LwjildB0wwNAA-eCi2COPNnk',
+  'u': '0AB2WQoaqwkSofm7JoLy300A',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'rd': 'EJ0LvbHq0Xe_7n6w3zMEw3jxkN69XgMvXdUNz5eRjXma',
+  's': 'EKuGAkHNpj5ujsEWQuZFe8bbuSrIOwojUNjgirDtWIAb',
+  'a': 
+  {
+    'd': 'EJ49D3m_0cmFN4dnTQfOYzCIcTvJ9dTa9uDHRPCKrHv7',
+    'u': '0AAF8XpKr9vDux1t4a_e-eru',
+    'i': 'EDB8gKNwzurf33pV2hsyGR9XFOmitDhc0LUzDamcU2JR',
+    'issuedDate': 
+    {
+      'd': 'EA3QrH6l2YKNrT0P18zhPJywlkenSgnkHNMFazCm8ikj',
+      'u': '0ABBkXLlldV6qk4jwQ65mqE6',
+      'value': '2026-08-01T00:00:00.000000+00:00'
+    },
+    'expirationDate': 
+    {
+      'd': 'EGJOt2PclwMcagcuPp8OopAbsfOmWxdq_ekz2IMfiIGT',
+      'u': '0ADcf26v3LBQucvjrX7qbpfE',
+      'value': '2034-08-01T00:00:00.000000+00:00'
+    },
+    'proof': 
+    {
+      'd': 'EGbZuJRXCHcQlvIa5WVZ1p30_ykpBKyDzEknQ1Q97WGq',
+      'u': '0AA8wJnrQqkO1eCglLZwD2aj',
+      'value': 'EPnX7JmOsTrPyFP8lqdyUmpo6Nr30AluLfnCYKd6PSEj'
+    }
+  },
+  'e': 
+  {
+    'd': 'EK_izv23Q61TQrs3aLmGWooZAplGWUvTBItS_k2cV4gN',
+    'u': '0ACe03hgAqfZU3jJzUNwSKpC',
+    'coreIdentity': 
+    {
+      'd': 'EAjM3grGqDxhHUhOg-ud-qap4RgVKowLKDyrgEPTTHuM',
+      'u': '0ABEs1f9TxNNlaoHAeOFXbAL',
+      'n': 'EGsPyGCyHtDSWP61rVsRh3F8qooP_jrX6qPHqHn7-FOg',
+      's': 'EN0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY-',
+      'o': ['E1E', 'DI1I', 'NI2I']
+    }
+  },
+  'r': 
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'l': ''
+  }
+}
+
+
+```
+
+###  Guardian Schema
+This defines an ACDC that a State Organizational Unit AID issues to delegate (authorize) a Citizen AID as a guardian for a ward AID.
+
+```python
+
+```
+
+#### Guardian ACDC Example
+
+```python
+
+```
+
+
 ### Replacement AID Schema
 This defines an ACDC that indicates a previously endorsed citizen's AID should be replaced with a new AID. Both AIDs are citizen-sourced. One use case is when a citizen loses control over their AID and has to start over with a new one. The replacement ACDC lets the citizen notify anyone they interacted with using the old AID that it is no longer the AID to use for that citizen. The other use case is for a ward whose guardian (parent) does not rotate the ward's keys to the ward's control upon emancipation. The Ward can start fresh with a new AID but notify any past interacting parties of the new AID.
 
@@ -1339,4 +2129,6 @@ ReplaceSchema = \
 }
 
 ```
+
+
 ## SEDI ACDC Usage Examples
