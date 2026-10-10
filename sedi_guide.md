@@ -1958,15 +1958,215 @@ ImageSchema = \
 This defines an ACDC that a State Organizational Unit AID issues to delegate (authorize) a Citizen AID as a guardian for a ward AID.
 
 ```python
-
+GuardianSchemaSaid = 'EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b'
+GuardianSchema = \
+{
+  '$id': 'EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b',
+  '$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'title': 'SEDI Guardianship Schema',
+  'description': 'SEDI Guardianship JSON Schema for acm ACDC.',
+  'credentialType': 'SEDI_Guardian_ACDC_acm_message',
+  'version': '0.1.0',
+  'type': 'object',
+  'required': ['v', 'd', 'i', 'rd', 's', 'a', 'e', 'r'],
+  'properties':
+  {
+    'v': {'description': 'ACDC version string', 'type': 'string'},
+    't': {'description': 'Message type', 'type': 'string'},
+    'd': {'description': 'Message SAID', 'type': 'string'},
+    'u': {'description': 'Message UE', 'type': 'string'},
+    'i': {'description': 'Issuer AID', 'type': 'string'},
+    'rd': {'description': 'Registry SAID', 'type': 'string'},
+    's':
+    {
+      'description': 'Schema Section',
+      'oneOf':
+      [
+        {'description': 'Schema Section SAID', 'type': 'string'},
+        {'description': 'Schema Section Detail','type': 'object'}
+      ]
+    },
+    'a':
+    {
+      'description': 'Attribute Section',
+      'oneOf':
+      [
+        {'description': 'Attribute Section SAID','type': 'string'},
+        {
+          'description': 'Attribute Section Detail',
+          'type': 'object',
+          'required':
+          [
+            'd',
+            'u',
+            'i',
+            'role',
+            'ward',
+            'issuedDate',
+          ],
+          'properties':
+          {
+            'd': {'description': 'Attribute Section SAID', 'type': 'string'},
+            'u': {'description': 'Attribute Section UE', 'type': 'string'},
+            'i': {'description': 'Issuee AID', 'type': 'string'},
+            'rd': {'description': 'Issuee Presentation Registry SAID', 'type': 'string'},
+            'role': {'description': 'Guardian Role', 'type': 'string'},
+            'ward': {'description': 'Ward AID', 'type': 'string'},
+            'issuedDate':
+            {
+              'description': 'Issued Date Block',
+              'oneOf':
+              [
+                {'description': 'Issued Date SAID', 'type': 'string'},
+                {
+                  'description': 'Issued Date Detail',
+                  'type': 'object',
+                  'required': ['d', 'u', 'value'],
+                  'properties':
+                  {
+                    'd': {'description': 'Block SAID', 'type': 'string'},
+                    'u': {'description': 'Bock UE', 'type': 'string'},
+                   'value': {'description': 'Issued Date Value as RFC-3339/ISO-8601 time MBZ', 'type': 'string'},
+                  },
+                  'additionalProperties': False
+                },
+              ]
+            },
+            'expirationDate':
+            {
+              'description': 'Expiration Date Block',
+              'oneOf':
+              [
+                {'description': 'Expiration Date SAID', 'type': 'string'},
+                {
+                  'description': 'Expiration Date Detail',
+                  'type': 'object',
+                  'required': ['d', 'u', 'value'],
+                  'properties':
+                  {
+                    'd': {'description': 'Block SAID', 'type': 'string'},
+                    'u': {'description': 'Bock UE', 'type': 'string'},
+                    'value': {'description': 'Expiration Date Value as RFC-3339/ISO-8601 time MBZ', 'type': 'string'},
+                  },
+                  'additionalProperties': False
+                }
+              ]
+            },
+          },
+          'additionalProperties': False
+        }
+      ]
+    },
+    'e':
+    {
+      'description': 'Edge Section',
+      'oneOf':
+      [
+        {'description': 'Edge Section SAID', 'type': 'string'},
+        {
+          'description': 'Edge Section Detail',
+          'type': 'object',
+          'required': ['d', 'u', 'utahAgent'],
+          'properties':
+          {
+            'd': {'description': 'Edge Section SAID', 'type': 'string'},
+            'u': {'description': 'Edge Section UE', 'type': 'string'},
+            'utahAgent':
+            {
+              'description': 'Utah Agent Edge Block',
+              'type': 'object',
+              'required': ['n', 's', 'o'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+          },
+          'additionalProperties': False
+        }
+      ]
+    },
+    'r':
+    {
+      'description': 'Rule Section',
+      'oneOf':
+      [
+        {'description': 'Rule Section SAID', 'type': 'string'},
+        {
+          'description': 'Rule Section Detail',
+          'type': 'object',
+          'required': ['d', 'l'],
+          'properties':
+          {
+            'd': {'description': 'Rule Section SAID', 'type': 'string'},
+            'l': {'description': 'Legal Language', 'type': 'string'}
+          },
+        'additionalProperties': False
+        }
+      ]
+    }
+  },
+  'additionalProperties': False
+}
 ```
 
 #### Guardian ACDC Example
 
 ```python
-
+{
+  'v': 'ACDCCAACAAJSONAASb.',
+  't': 'acm',
+  'd': 'EONzgE0pcYF7hz1E_VVN4ea9iv75Q_C2ifhsZV1j6uQp',
+  'u': '0ADXSX677aGYvS4d5a1u6J2X',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'rd': 'EDOfxmEeOsWdi5ZQyuy98W4s15vmV1RWVFuqm4GZflTn',
+  's': 'EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b',
+  'a': 
+  {
+    'd': 'EDhdyFmwvPUkniyoHMNDQOpk_cJsN_FYPEUqiklW4NMs',
+    'u': '0ADk_KpjHu2tltJJrAOUDSSQ',
+    'i': 'EDB8gKNwzurf33pV2hsyGR9XFOmitDhc0LUzDamcU2JR',
+    'rd': 'ELUW5D0X0pMFM30ZHZKB997lad86PISushrKkKzlhQrl',
+    'role': 'parent',
+    'ward': 'EKr8JLtfqWCmHrxO3yu8ocS2n9o0Tlspeaqm9ZOf3FM1',
+    'issuedDate': 
+    {
+      'd': 'EHDyi3drPTNJ6WDAvPIbcOqtRV03mTPLRuRyTSzQUfpS',
+      'u': '0AALcJnxH3SlR-HiMZ6evv0U',
+      'value': '2012-06-21T00:00:00.000000+00:00'
+    },
+    'expirationDate': 
+    {
+      'd': 'EPtJr5V6lRCBvT4QudVp7ucFspyjWPRhedf9MRG_CaEa',
+      'u': '0ACbGWBFSYSV2WYripA_fQ2S',
+      'value': '2030-06-21T00:00:00.000000+00:00'
+    }
+  },
+  'e': 
+  {
+    'd': 'EJLcbUvhJovz0feXaG5qddR5cvlsLk2KzFCtu56JzvsP',
+    'u': '0ACbGWBFSYSV2WYripA_fQ2S',
+    'utahAgent': 
+    {
+      'd': 'EI9FLb6B7Oe54SW6A1Rk_PMj3zHe7Cc3Ukup97SJR5X8',
+      'u': '0ABgAUzqg-7DB3Mn6Uqoiyla',
+      'n': 'EOD4QiWo1oa6UtiEr456Lu0ba3v1Cmd6qOPoRbAdx2hD',
+      's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+      'o': 'DI2I'
+    }
+  },
+  'r': 
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'l': ''
+  }
+}
 ```
-
 
 ### Replacement AID Schema
 This defines an ACDC that indicates a previously endorsed citizen's AID should be replaced with a new AID. Both AIDs are citizen-sourced. One use case is when a citizen loses control over their AID and has to start over with a new one. The replacement ACDC lets the citizen notify anyone they interacted with using the old AID that it is no longer the AID to use for that citizen. The other use case is for a ward whose guardian (parent) does not rotate the ward's keys to the ward's control upon emancipation. The Ward can start fresh with a new AID but notify any past interacting parties of the new AID.
