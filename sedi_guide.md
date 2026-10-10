@@ -34,6 +34,8 @@ The following table provides the schema ID  `$id` field and a description. ACDCs
 | EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b | SEDI Citizen Guardian Authority Delegation |
 | EB8MUTKRg8284YPduyhDgUVvNM192-247KcRaXhIxoni | SEDI Guardian to Ward Social Access Authorization |
 | EGcqmkrnaQz8F1PEekLOaySiW-uDaJ0SfoqtSuqCvEif | SEDI Bespoke Combined Presentation |
+| EPVlX-S-eWERGiXJmb7FcW75I4J08ptQ-jGglq4VRwou | SEDI AID Replacement |
+| EFAB6k77bXHs6bg9PORW7UYF79GD_OuEcEjmBpwhcfRN | SEDI Identity Assurance Proofing Session Receipt |
 
 
 
