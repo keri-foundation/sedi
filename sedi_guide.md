@@ -32,6 +32,10 @@ The following table provides the schema ID  `$id` field and a description. ACDCs
 | EPqXrwPT6b0_KghrrMuIdmuD68Aytv1XK6jU86EumgJV | SEDI Citizen Age Threshold Attributes|
 | EKuGAkHNpj5ujsEWQuZFe8bbuSrIOwojUNjgirDtWIAb | SEDI Citizen High Resolution Image Biometric Proof |
 | EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b | SEDI Citizen Guardian Authority Delegation |
+| EB8MUTKRg8284YPduyhDgUVvNM192-247KcRaXhIxoni | SEDI Guardian to Ward Social Access Authorization |
+| EGcqmkrnaQz8F1PEekLOaySiW-uDaJ0SfoqtSuqCvEif | SEDI Bespoke Combined Presentation |
+| EPVlX-S-eWERGiXJmb7FcW75I4J08ptQ-jGglq4VRwou | SEDI AID Replacement |
+| EFAB6k77bXHs6bg9PORW7UYF79GD_OuEcEjmBpwhcfRN | SEDI Identity Assurance Proofing Session Receipt |
 
 
 
@@ -1100,8 +1104,6 @@ ResidenceSchema = \
 
 #### Residence Schema Example
 
-
-
 ```python
 {
   'v': 'ACDCCAACAAJSONAAZA.',
@@ -1180,7 +1182,6 @@ ResidenceSchema = \
 }
 
 ```
-
 
 ### Age Schema
 This defines an ACDC that a State Issuing Agent AID issues to a citizen AID to endorse that citizen's age thresholds without disclosing their data of birth. 
@@ -1696,6 +1697,7 @@ AgeSchema = \
   }
 }
 ```
+
 ### High Resolution Facial Image Schema
 This defines an ACDC that a State Issuing Agent AID issues to a citizen AID in order to endorse the proof of a higher-resolution facial image biometric than that provided in their core identity ACDC. This is useful for applications that need a high-resolution facial image as a biometric.
 
@@ -1950,23 +1952,677 @@ ImageSchema = \
     'l': ''
   }
 }
-
-
 ```
 
 ###  Guardian Schema
 This defines an ACDC that a State Organizational Unit AID issues to delegate (authorize) a Citizen AID as a guardian for a ward AID.
 
 ```python
-
+GuardianSchemaSaid = 'EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b'
+GuardianSchema = \
+{
+  '$id': 'EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b',
+  '$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'title': 'SEDI Guardianship Schema',
+  'description': 'SEDI Guardianship JSON Schema for acm ACDC.',
+  'credentialType': 'SEDI_Guardian_ACDC_acm_message',
+  'version': '0.1.0',
+  'type': 'object',
+  'required': ['v', 'd', 'i', 'rd', 's', 'a', 'e', 'r'],
+  'properties':
+  {
+    'v': {'description': 'ACDC version string', 'type': 'string'},
+    't': {'description': 'Message type', 'type': 'string'},
+    'd': {'description': 'Message SAID', 'type': 'string'},
+    'u': {'description': 'Message UE', 'type': 'string'},
+    'i': {'description': 'Issuer AID', 'type': 'string'},
+    'rd': {'description': 'Registry SAID', 'type': 'string'},
+    's':
+    {
+      'description': 'Schema Section',
+      'oneOf':
+      [
+        {'description': 'Schema Section SAID', 'type': 'string'},
+        {'description': 'Schema Section Detail','type': 'object'}
+      ]
+    },
+    'a':
+    {
+      'description': 'Attribute Section',
+      'oneOf':
+      [
+        {'description': 'Attribute Section SAID','type': 'string'},
+        {
+          'description': 'Attribute Section Detail',
+          'type': 'object',
+          'required':
+          [
+            'd',
+            'u',
+            'i',
+            'role',
+            'ward',
+            'issuedDate',
+          ],
+          'properties':
+          {
+            'd': {'description': 'Attribute Section SAID', 'type': 'string'},
+            'u': {'description': 'Attribute Section UE', 'type': 'string'},
+            'i': {'description': 'Issuee AID', 'type': 'string'},
+            'rd': {'description': 'Issuee Presentation Registry SAID', 'type': 'string'},
+            'role': {'description': 'Guardian Role', 'type': 'string'},
+            'ward': {'description': 'Ward AID', 'type': 'string'},
+            'issuedDate':
+            {
+              'description': 'Issued Date Block',
+              'oneOf':
+              [
+                {'description': 'Issued Date SAID', 'type': 'string'},
+                {
+                  'description': 'Issued Date Detail',
+                  'type': 'object',
+                  'required': ['d', 'u', 'value'],
+                  'properties':
+                  {
+                    'd': {'description': 'Block SAID', 'type': 'string'},
+                    'u': {'description': 'Bock UE', 'type': 'string'},
+                   'value': {'description': 'Issued Date Value as RFC-3339/ISO-8601 time MBZ', 'type': 'string'},
+                  },
+                  'additionalProperties': False
+                },
+              ]
+            },
+            'expirationDate':
+            {
+              'description': 'Expiration Date Block',
+              'oneOf':
+              [
+                {'description': 'Expiration Date SAID', 'type': 'string'},
+                {
+                  'description': 'Expiration Date Detail',
+                  'type': 'object',
+                  'required': ['d', 'u', 'value'],
+                  'properties':
+                  {
+                    'd': {'description': 'Block SAID', 'type': 'string'},
+                    'u': {'description': 'Bock UE', 'type': 'string'},
+                    'value': {'description': 'Expiration Date Value as RFC-3339/ISO-8601 time MBZ', 'type': 'string'},
+                  },
+                  'additionalProperties': False
+                }
+              ]
+            },
+          },
+          'additionalProperties': False
+        }
+      ]
+    },
+    'e':
+    {
+      'description': 'Edge Section',
+      'oneOf':
+      [
+        {'description': 'Edge Section SAID', 'type': 'string'},
+        {
+          'description': 'Edge Section Detail',
+          'type': 'object',
+          'required': ['d', 'u', 'utahAgent'],
+          'properties':
+          {
+            'd': {'description': 'Edge Section SAID', 'type': 'string'},
+            'u': {'description': 'Edge Section UE', 'type': 'string'},
+            'utahAgent':
+            {
+              'description': 'Utah Agent Edge Block',
+              'type': 'object',
+              'required': ['n', 's', 'o'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+          },
+          'additionalProperties': False
+        }
+      ]
+    },
+    'r':
+    {
+      'description': 'Rule Section',
+      'oneOf':
+      [
+        {'description': 'Rule Section SAID', 'type': 'string'},
+        {
+          'description': 'Rule Section Detail',
+          'type': 'object',
+          'required': ['d', 'l'],
+          'properties':
+          {
+            'd': {'description': 'Rule Section SAID', 'type': 'string'},
+            'l': {'description': 'Legal Language', 'type': 'string'}
+          },
+        'additionalProperties': False
+        }
+      ]
+    }
+  },
+  'additionalProperties': False
+}
 ```
 
 #### Guardian ACDC Example
 
 ```python
+{
+  'v': 'ACDCCAACAAJSONAASb.',
+  't': 'acm',
+  'd': 'EONzgE0pcYF7hz1E_VVN4ea9iv75Q_C2ifhsZV1j6uQp',
+  'u': '0ADXSX677aGYvS4d5a1u6J2X',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'rd': 'EDOfxmEeOsWdi5ZQyuy98W4s15vmV1RWVFuqm4GZflTn',
+  's': 'EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b',
+  'a': 
+  {
+    'd': 'EDhdyFmwvPUkniyoHMNDQOpk_cJsN_FYPEUqiklW4NMs',
+    'u': '0ADk_KpjHu2tltJJrAOUDSSQ',
+    'i': 'EDB8gKNwzurf33pV2hsyGR9XFOmitDhc0LUzDamcU2JR',
+    'rd': 'ELUW5D0X0pMFM30ZHZKB997lad86PISushrKkKzlhQrl',
+    'role': 'parent',
+    'ward': 'EKr8JLtfqWCmHrxO3yu8ocS2n9o0Tlspeaqm9ZOf3FM1',
+    'issuedDate': 
+    {
+      'd': 'EHDyi3drPTNJ6WDAvPIbcOqtRV03mTPLRuRyTSzQUfpS',
+      'u': '0AALcJnxH3SlR-HiMZ6evv0U',
+      'value': '2012-06-21T00:00:00.000000+00:00'
+    },
+    'expirationDate': 
+    {
+      'd': 'EPtJr5V6lRCBvT4QudVp7ucFspyjWPRhedf9MRG_CaEa',
+      'u': '0ACbGWBFSYSV2WYripA_fQ2S',
+      'value': '2030-06-21T00:00:00.000000+00:00'
+    }
+  },
+  'e': 
+  {
+    'd': 'EJLcbUvhJovz0feXaG5qddR5cvlsLk2KzFCtu56JzvsP',
+    'u': '0ACbGWBFSYSV2WYripA_fQ2S',
+    'utahAgent': 
+    {
+      'd': 'EI9FLb6B7Oe54SW6A1Rk_PMj3zHe7Cc3Ukup97SJR5X8',
+      'u': '0ABgAUzqg-7DB3Mn6Uqoiyla',
+      'n': 'EOD4QiWo1oa6UtiEr456Lu0ba3v1Cmd6qOPoRbAdx2hD',
+      's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+      'o': 'DI2I'
+    }
+  },
+  'r': 
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'l': ''
+  }
+}
+```
+
+### Guardian to Ward Social Access Authorization Schema
+This defines an ACDC issued by a Guardian AID to the AID of one of its Wards to authorize that Ward's access to social media.
+
+```python
+SocialSchemaSaid = 'EB8MUTKRg8284YPduyhDgUVvNM192-247KcRaXhIxoni'
+SocialSchema = \
+{
+  '$id': 'EB8MUTKRg8284YPduyhDgUVvNM192-247KcRaXhIxoni',
+  '$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'title': 'SEDI Social Authorization Schema',
+  'description': 'SEDI Guardian Issued to Ward Social Authorization JSON Schema for acm ACDC.',
+  'credentialType': 'SEDI_Social_ACDC_acm_message',
+  'version': '0.1.0',
+  'type': 'object',
+  'required': ['v', 'd', 'i', 'rd', 's', 'a', 'e', 'r'],
+  'properties':
+  {
+    'v': {'description': 'ACDC version string', 'type': 'string'},
+    't': {'description': 'Message type', 'type': 'string'},
+    'd': {'description': 'Message SAID', 'type': 'string'},
+    'u': {'description': 'Message UE', 'type': 'string'},
+    'i': {'description': 'Issuer AID', 'type': 'string'},
+    'rd': {'description': 'Registry SAID', 'type': 'string'},
+    's':
+    {
+      'description': 'Schema Section',
+      'oneOf':
+      [
+        {'description': 'Schema Section SAID', 'type': 'string'},
+        {'description': 'Schema Section Detail','type': 'object'}
+      ]
+    },
+    'a':
+    {
+      'description': 'Attribute Section',
+      'oneOf':
+      [
+        {'description': 'Attribute Section SAID','type': 'string'},
+        {
+          'description': 'Attribute Section Detail',
+          'type': 'object',
+          'required':
+          [
+            'd',
+            'u',
+            'i',
+            'issued',
+            'expires',
+            'rc',
+          ],
+          'properties':
+          {
+            'd': {'description': 'Attribute Section SAID', 'type': 'string'},
+            'u': {'description': 'Attribute Section UE', 'type': 'string'},
+            'i': {'description': 'Issuee AID', 'type': 'string'},
+            'rd': {'description': 'Issuee Presentation Registry SAID', 'type': 'string'},
+            'issued': { 'description': 'Issued Datetime Value as RFC-3339/ISO-8601', 'type': 'string'},
+            'expires': { 'description': 'Expiration Datetime Value as RFC-3339/ISO-8601', 'type': 'string'},
+            'rc':
+            {
+              'description': 'Authorized Resource Capabilities',
+              'type': 'object',
+              'properties':
+              {
+                'myEmptySpace':
+                {
+                  'description': "Access to My Empty Space",
+                  'type': 'array',
+                  'items': {'type': 'string'},
+                },
+              },
+              'additionalProperties': True
+            },
+          },
+          'additionalProperties': False
+        }
+      ]
+    },
+    'e':
+    {
+      'description': 'Edge Section',
+      'oneOf':
+      [
+        {'description': 'Edge Section SAID', 'type': 'string'},
+        {
+          'description': 'Edge Section Detail',
+          'type': 'object',
+          'required': ['d', 'u', 'guardian'],
+          'properties':
+          {
+            'd': {'description': 'Edge Section SAID', 'type': 'string'},
+            'u': {'description': 'Edge Section UE', 'type': 'string'},
+            'guardian':
+            {
+              'description': 'Guardian Edge Block',
+              'type': 'object',
+              'required': ['n', 's', 'o'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+          },
+          'additionalProperties': False
+        }
+      ]
+    },
+    'r':
+    {
+      'description': 'Rule Section',
+      'oneOf':
+      [
+        {'description': 'Rule Section SAID', 'type': 'string'},
+        {
+          'description': 'Rule Section Detail',
+          'type': 'object',
+          'required': ['d', 'l'],
+          'properties':
+          {
+            'd': {'description': 'Rule Section SAID', 'type': 'string'},
+            'l': {'description': 'Legal Language', 'type': 'string'}
+          },
+        'additionalProperties': False
+        }
+      ]
+    }
+  },
+  'additionalProperties': False
+}
 
 ```
 
+#### Social Access Authorization ACDC Example
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAOu.',
+  't': 'acm',
+  'd': 'EGdxe5u7SRt__mJBvjRc0LdJycRDYgdnrjwdce9UQDE6',
+  'u': '0ADxmNUC42qQYJNlAMOsqHsY',
+  'i': 'EDB8gKNwzurf33pV2hsyGR9XFOmitDhc0LUzDamcU2JR',
+  'rd': 'EKuAljh08_m1CXluTeogXxHHlX93iqpmVfjMZ1cufhR-',
+  's': 'EB8MUTKRg8284YPduyhDgUVvNM192-247KcRaXhIxoni',
+  'a': 
+  {
+    'd': 'ELD17t_hP-FJFTV5Iev7awrNVB8uABFAn0_xVEFrIm-t',
+    'u': '0ABVbaoAh9HG7yVStjrYzNQa',
+    'i': 'EKr8JLtfqWCmHrxO3yu8ocS2n9o0Tlspeaqm9ZOf3FM1',
+    'rd': 'EAbxluMtNsPnHFu9texttH3G6B1s3ZqmJwpLhNbgc6ib',
+    'issued': '2026-10-24T09:30:00.000000+00:00',
+    'expires': '2026-10-31T22:00:00.000000+00:00',
+    'rc': {'myEmptySpace': ['all']}
+  },
+  'e': 
+  {
+    'd': 'EJf-YBNcc-aJg2fN89mhmWWh_ZQ6jA3IKPxAE6yd7_hd',
+    'u': '0AAzOwU4s4tz6NfWZwjVvqRx',
+    'guardian': 
+    {
+      'd': 'EOiJkANQejaXxO9YqPhGZKDo6TAoA8kPPWh5QrgJFpvG',
+      'u': '0ABO77Mb-lpbomUCGZgJ4Htz',
+      'n': 'EONzgE0pcYF7hz1E_VVN4ea9iv75Q_C2ifhsZV1j6uQp',
+      's': 'EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b',
+      'o': 'I2I'
+    }
+  },
+  'r': 
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'l': ''
+  }
+}
+```
+
+### Bespoke Combined Presentation Schema
+This defines a self-issued ACDC by a Citizen to itself to enable multiple of its SEDI ACDCs to be presented in one presentation.  The ACDC has optional edges to each of its SEDI ACDC types. This enables a single authentication factor one the presentataion to apply to all the SEDI ACDCs in the DAG (Directed Acyclic Graph) of ACDCs created by the bespoke ACDC acting as the origin node in the DAG.
+
+```python
+BespokeSchemaSaid = 'EGcqmkrnaQz8F1PEekLOaySiW-uDaJ0SfoqtSuqCvEif'
+BespokeSchema = \
+{
+  '$id': 'EGcqmkrnaQz8F1PEekLOaySiW-uDaJ0SfoqtSuqCvEif',
+  '$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'title': 'SEDI Bespoke Presentation Schema',
+  'description': 'SEDI Bespoke Presentation JSON Schema for acm ACDC.',
+  'credentialType': 'SEDI_Bespoke_ACDC_acm_message',
+  'version': '0.1.0',
+  'type': 'object',
+  'required': ['v', 'd', 'i', 's', 'a', 'e', 'r'],
+  'properties':
+  {
+    'v': {'description': 'ACDC version string', 'type': 'string'},
+    't': {'description': 'Message type', 'type': 'string'},
+    'd': {'description': 'Message SAID', 'type': 'string'},
+    'u': {'description': 'Message UE', 'type': 'string'},
+    'i': {'description': 'Issuer AID', 'type': 'string'},
+    'rd': {'description': 'Registry SAID', 'type': 'string'},
+    's':
+    {
+      'description': 'Schema Section',
+      'oneOf':
+      [
+        {'description': 'Schema Section SAID', 'type': 'string'},
+        {'description': 'Schema Section Detail','type': 'object'}
+      ]
+    },
+    'a':
+    {
+      'description': 'Attribute Section',
+      'oneOf':
+      [
+        {'description': 'Attribute Section SAID','type': 'string'},
+        {
+          'description': 'Attribute Section Detail',
+          'type': 'object',
+          'required':
+          [
+            'd',
+            'u',
+            'i',
+          ],
+          'properties':
+          {
+            'd': {'description': 'Attribute Section SAID', 'type': 'string'},
+            'u': {'description': 'Attribute Section UE', 'type': 'string'},
+            'i': {'description': 'Issuee AID', 'type': 'string'},
+          },
+          'additionalProperties': True
+        }
+      ]
+    },
+    'e':
+    {
+      'description': 'Edge Section',
+      'oneOf':
+      [
+        {'description': 'Edge Section SAID', 'type': 'string'},
+        {
+          'description': 'Edge Section Detail',
+          'type': 'object',
+          'required': ['d', 'u'],
+          'properties':
+          {
+            'd': {'description': 'Edge Section SAID', 'type': 'string'},
+            'u': {'description': 'Edge Section UE', 'type': 'string'},
+            'core':
+            {
+              'description': 'Core Edge Block',
+              'type': 'object',
+              'required': ['n'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+            'residence':
+            {
+              'description': 'Residence Edge Block',
+              'type': 'object',
+              'required': ['n'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+            'age':
+            {
+              'description': 'Age Edge Block',
+              'type': 'object',
+              'required': ['n'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+            'image':
+            {
+              'description': 'High Resolution Image Proof Edge Block',
+              'type': 'object',
+              'required': ['n'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+            'guardian':
+            {
+              'description': 'Guardian Edge Block',
+              'type': 'object',
+              'required': ['n'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+            'social':
+            {
+              'description': 'Social Edge Block',
+              'type': 'object',
+              'required': ['n'],
+              'properties':
+              {
+                'd': {'description': 'Edge SAID', 'type': 'string'},
+                'u': {'description': 'Edge UE', 'type': 'string'},
+                'n': {'description': 'Far Node SAID', 'type': 'string'},
+                's': {'description': 'Far Node Schema SAID', 'type': 'string'},
+                'o': {'description': 'Edge Unary Operator', 'type': 'string'}
+              },
+              'additionalProperties': False
+            },
+          },
+          'additionalProperties': False
+        }
+      ]
+    },
+    'r':
+    {
+      'description': 'Rule Section',
+      'oneOf':
+      [
+        {'description': 'Rule Section SAID', 'type': 'string'},
+        {
+          'description': 'Rule Section Detail',
+          'type': 'object',
+          'required': ['d', 'l'],
+          'properties':
+          {
+            'd': {'description': 'Rule Section SAID', 'type': 'string'},
+            'l': {'description': 'Legal Language', 'type': 'string'}
+          },
+        'additionalProperties': False
+        }
+      ]
+    }
+  },
+  'additionalProperties': False
+}
+
+```
+
+#### Bespoke Combined Presentation ACDC Example (Residence and Guardian)
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAM5.',
+  't': 'acm',
+  'd': 'EHmafMoTjFeHzmdu9GiXy5sWm_ExYz42LuqyKq_lFK2p',
+  'u': '0ADCnHvSjDeSo_EHVGv44hOy',
+  'i': 'EIaSWASllNlAuAFcDG1xbXGEkVw_oL0CX8_o1XkFTegY',
+  's': 'EGcqmkrnaQz8F1PEekLOaySiW-uDaJ0SfoqtSuqCvEif',
+  'a': 
+  {
+    'd': 'EFfhhIL-0qCzbKkvXBcH1sDAakjfTFgMC9TNcFMYnaN-',
+    'u': '0ABfXgs2Vt3Oa8noCVEVP38F',
+    'i': 'EIaSWASllNlAuAFcDG1xbXGEkVw_oL0CX8_o1XkFTegY'
+  },
+  'e': 
+  {
+    'd': 'EO283KV3d8EFMD0zKRICyJyahvwtEn_vja6pag1Gvofr',
+    'u': '0AAIbF2jbwg027GrlA4_dNSh',
+    'residence': 
+    {
+      'd': 'ED5FE4uvmZ0LqYBhua7UGq7r9ZGl0PYtEPRKRAycLd4u',
+      'u': '0ABYDbxxwIfWQ83opV1OPoPj',
+      'n': 'EOsxMfKdzgCtSR53uBRpysnvAViIsuIaNSmjQc30HDs2',
+      'o': 'I2I'
+    },
+    'guardian': 
+    {
+      'd': 'EL-0kEbnjCy0zkBtSUhHcLp8J7J2tnQBqa3P79YCiUZ4',
+      'u': '0ACro0-X2YlYDB78INN6CEEC',
+      'n': 'ENTwQxDFnVXigOTcymAXSHCgl26a0p3POYiRFnTL1lb0',
+      'o': 'I2I'
+    }
+  },
+  'r': 
+  {
+    d': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'l': ''
+  }
+}
+```
+
+#### Bespoke Combined Presentation ACDC Example (Age and Social Access)
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAMx.',
+  't': 'acm',
+  'd': 'EACZWEWeUKMw0d59M30OmlxpQfxUK0_OW9FkUT25iokI',
+  'u': '0AARpi9PM79plQI-rP2enPXJ',
+  'i': 'EKr8JLtfqWCmHrxO3yu8ocS2n9o0Tlspeaqm9ZOf3FM1',
+  's': 'EGcqmkrnaQz8F1PEekLOaySiW-uDaJ0SfoqtSuqCvEif',
+  'a': 
+  {
+    'd': 'EP9aY5tjVfzqV3CCyB3KnIGRPKuB_NO9ajAFYKOC20cN',
+    'u': '0AAJsl8NNe3Ajs_GDdxw_Ilb',
+    'i': 'EKr8JLtfqWCmHrxO3yu8ocS2n9o0Tlspeaqm9ZOf3FM1'
+  },
+  'e': 
+  {
+    'd': 'EGZ-MGre9h06zXulltjEHc7z_mEmJD3kN_3Df9eMV8Kw',
+    'u': '0ADQOM8dUNGQqnaYrpQUeZxO',
+    'age': 
+    {
+      'd': 'EM0ZAhNU3fEqMlLD5iHYz24Bv0EuMjJxsXGnsHsci5Fc',
+      'u': '0AD_tiK8iw7ZQNWgsq9gKaHt',
+      'n': 'EJICGrKf1Lr1xg0EwSFViU_hJALJQcZSyI9gKk1tEkMr',
+      'o': 'I2I'
+    },
+    'social': 
+    {
+      'd': 'EKYgLtmuXOimgfRGVDiTJSFKbWuSUjHs_KXW0PDwA2sO',
+      'u': '0AAmaC3QZgvoFtw1TlCLc6Gz',
+      'n': 'EGdxe5u7SRt__mJBvjRc0LdJycRDYgdnrjwdce9UQDE6',
+      'o': 'I2I'
+    }
+  },
+  'r': 
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'l': ''
+  }
+}
+```
 
 ### Replacement AID Schema
 This defines an ACDC that indicates a previously endorsed citizen's AID should be replaced with a new AID. Both AIDs are citizen-sourced. One use case is when a citizen loses control over their AID and has to start over with a new one. The replacement ACDC lets the citizen notify anyone they interacted with using the old AID that it is no longer the AID to use for that citizen. The other use case is for a ward whose guardian (parent) does not rotate the ward's keys to the ward's control upon emancipation. The Ward can start fresh with a new AID but notify any past interacting parties of the new AID.
@@ -2128,6 +2784,160 @@ ReplaceSchema = \
   }
 }
 
+```
+
+### Identity Assurance Receipt (proofing session) Schema
+
+```python
+IarSchemaSaid = 'EFAB6k77bXHs6bg9PORW7UYF79GD_OuEcEjmBpwhcfRN'
+IarSchema = \
+{
+  '$id': 'EFAB6k77bXHs6bg9PORW7UYF79GD_OuEcEjmBpwhcfRN',
+  '$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'title': 'SEDI IAR Schema',
+  'description': 'SEDI IAR Identity Assurance Receipt JSON Schema for acm ACDC.',
+  'credentialType': 'SEDI_IAR_ACDC_acm_message',
+  'version': '0.1.0',
+  'type': 'object',
+  'required': ['v', 'd', 'i', 's', 'a'],
+  'properties':
+  {
+    'v': {'description': 'ACDC version string', 'type': 'string'},
+    't': {'description': 'Message type', 'type': 'string'},
+    'd': {'description': 'Message SAID', 'type': 'string'},
+    'u': {'description': 'Message UE', 'type': 'string'},
+    'i': {'description': 'Issuer AID', 'type': 'string'},
+    's':
+    {
+      'description': 'Schema Section',
+      'oneOf':
+      [
+        {'description': 'Schema Section SAID', 'type': 'string'},
+        {'description': 'Schema Section Detail', 'type': 'object'}
+      ]
+    },
+    'a':
+    {
+      'description': 'Attribute Section',
+      'oneOf':
+      [
+        {'description': 'Attribute Section SAID', 'type': 'string'},
+        {
+        'description': 'Attribute Section Detail',
+        'type': 'object',
+        'required':
+        [
+          'd',
+          'i',
+          'givenName',
+          'middleName',
+          'familyName',
+          'nameSuffix',
+          'birthDate',
+          'facialImageProof',
+          'legalPresenceStatus',
+          'residence',
+          'proofingDatetime',
+          'sediURL'
+        ],
+        'properties':
+        {
+          'd': {'description': 'Attribute Section SAID', 'type': 'string'},
+          'i': {'description': 'Issuee SMAID SEDI Management AID', 'type': 'string'},
+          'givenName': {'description': 'Given Name', 'type': 'string'},
+          'middleName': {'description': 'Middle Name(s)', 'type': 'string'},
+          'familyName': {'description': 'Family Name', 'type': 'string'},
+          'nameSuffix': {'description': 'Name Suffix', 'type': 'string'},
+          'birthDate': {'description': 'Date of birth RFC-3339/ISO-8601 time MBZ', 'type': 'string'},
+          'facialImageProof': {'description': 'Image typed media block SAID', 'type': 'string'},
+          'legalPresenceStatus': {'description': 'Legal presences status i.e. citizen', 'type': 'string'},
+          'residence':
+          {
+            'description': 'Residence detail',
+            'type': 'object',
+            'required':
+            [
+              'street',
+              'city',
+              'county',
+              'state',
+              'postcode',
+              'country'
+            ],
+            'properties':
+            {
+              'street': {'description': 'Street address with unit', 'type': 'string'},
+              'city': {'description': 'City name', 'type': 'string'},
+              'county': {'description': 'County name', 'type': 'string'},
+              'state': {'description': 'State name', 'type': 'string'},
+              'postcode': {'description': 'Postal (zip) code', 'type': 'string'},
+              'country': {'description': 'Country name', 'type': 'string'}
+            }
+          },
+          'proofingDatetime': {'description': 'Proofing session datetime RFC-3339/ISO-8601', 'type': 'string'},
+          'sediURL': {'description': 'URL to obtain SEDI', 'type': 'string'}
+        },
+        'additionalProperties': False}
+      ]
+    },
+    'r':
+    {
+      'description': 'Rule Section',
+      'oneOf':
+      [
+        {'description': 'Rule Section SAID', 'type': 'string'},
+        {
+          'description': 'Rule Section Detail',
+          'type': 'object',
+          'required': ['d', 'l'],
+          'properties':
+          {
+            'd': {'description': 'Rule Section SAID', 'type': 'string'},
+            'l': {'description': 'Legal Language', 'type': 'string'}
+          },
+          'additionalProperties': False
+        }
+      ]
+    }
+  },
+  'additionalProperties': False
+}
+```
+
+#### Identity Assurance Receipt ACDC Example
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAMR.',,
+  't': 'acm',
+  'd': 'EByqzW5jFrrXhC_b9jYkHJaWAoc3L5GTqmmWUnq4KGQ9',
+  'u': '0ABndXlzZWRpY2hhbGxlbmdl',
+  'i': 'EAgq2LY03zk9NUempbqdLzG4PiGnmVMqTD0DfrY9Whwh',
+  's': 'EFAB6k77bXHs6bg9PORW7UYF79GD_OuEcEjmBpwhcfRN',
+  'a': 
+  {
+    'd': 'EM6r7vSi3Egpp0KB5O6WjB2g-wfwLey1J_NI3K1vJ_PR',
+    'i': 'EDB8gKNwzurf33pV2hsyGR9XFOmitDhc0LUzDamcU2JR',
+    'givenName': 'Guy',
+    'middleName': 'Marty McFly',
+    'familyName': 'Brown',
+    'nameSuffix': 'Jr',
+    'birthDate': '2002-08-22T00:00:00.000000+00:00',
+    'facialImageProof': 'EIQw_2CqmmC96YYUFXTW8XSkLQU2-v9bDCyItazmKhTW',
+    'legalPresenceStatus': 'citizen',
+    'residence': 
+    {
+      'street': '157 E 300 N',
+      'city': 'Beaver',
+      'county': 'Beaver',
+      'state': 'Utah',
+      'postcode': '84713',
+      'country': 'United States'
+    },
+    'proofingDatetime': '2026-09-01T09:30:00.000000+00:00',
+    'sediURL': 'https://example.com/sedi/here'
+  }
+}
 ```
 
 
