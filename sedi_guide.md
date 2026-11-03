@@ -16,7 +16,7 @@ KERI and ACDCs support two unique, vitally important properties for SEDI. These 
 
 *Perpetual identity* means that the controller of the identifier(s) (AIDs) associated with that identity can maintain control in perpetuity despite continuing rotations of the keys that control those identifier(s) (AIDs). This property enables true decentralization of digital identity. True perpetual identity means a citizen does not rely on or remain beholden to trusted third parties (such as the State) to create and maintain control over their own digital identity. 
 
-*Perpetually verifiable issuance* means that an issuing entity such as the State can issue an endorsement from their identifier(s) (AIDs) that refer to a citizen's identifier(s) (AIDs) where such endorsement may be verified by some party in perpetuity despite continuing rotations of the issuer's keys that control their own identifiers (AIDs). This property enables persistent entitlements whose lifespan is not limited by the cryptoperiod (lifespan) of their cryptographic keys. Once issued, a citizen can use the entitlement without continuing reliance on the State. This removes the centralizing force of entitlements that must be reissued on short time scales determined by the cryptoperiod of the issuer keys, not the entitlement's legal requirements. Such cryptoperiod-driven reissuance essentially forces citizens to keep interacting with, and relying on, the State to use the entitlements. Such reliance would effectively defeat citizen control over their digital identity. Therefore, such reliance would conflict with the legal requirements set forth in the SEDI legislation. 
+*Perpetually verifiable issuance* means that an issuing entity such as the State can issue an endorsement from their identifier(s) (AIDs) that refer to a citizen's identifier(s) (AIDs) where such endorsement may be verified by some party in perpetuity despite continuing rotations of the Issuer's keys that control their own identifiers (AIDs). This property enables persistent entitlements whose lifespan is not limited by the cryptoperiod (lifespan) of their cryptographic keys. Once issued, a citizen can use the entitlement without continuing reliance on the State. This removes the centralizing force of entitlements that must be reissued on short time scales determined by the cryptoperiod of the Issuer keys, not the entitlement's legal requirements. Such cryptoperiod-driven reissuance essentially forces citizens to keep interacting with, and relying on, the State to use the entitlements. Such reliance would effectively defeat citizen control over their digital identity. Therefore, such reliance would conflict with the legal requirements set forth in the SEDI legislation. 
 
 Importantly, perpetually verifiable issuance implies that the issuance may be authenticated in perpetuity and that any entitlement issued, such as authorization to access resources, may also be verified in perpetuity. This perpetual verifiability of authentic issuance is independent of the authorization's active period. An entitlement may expire or be revoked, but its authentic issuance remains verifiable despite key rotations. In contrast, issuances whose authenticity depends on a given key state (and therefore does not survive a key rotation) are vulnerable to forgery should the key be compromised and therefore have, at best, ephemeral authenticity.
 
@@ -28,7 +28,7 @@ The Root AID can then delegate authority to other AIDs under the control of Stat
 
 ACDCs normatively support relationships through cryptographically verifiable edges or links to other ACDCs. These relationships can represent delegation hierarchies. Thus, a specific delegation of authority expressed with an ACDC is a verifiable digital credential whose metes and bounds are cryptographically provable. A delegation hierarchy is composed of linked delegations. Revoking any link in the chain can break the chain of authority. This closely models how real-world organizations delegate authority. The SEDI program leverages this feature. 
 
-An ACDC as a delegation has an Issuer AID and an Issuee AID. The Issuer is the Delegator, and the Issuee is the Delegatee. The ACDC type determines what authority is delegated. The ACDC fields designate the AIDs of the Delegator and Delegatee. The underlying KERI/ACDC infrastructure makes that delegation perpetually verifiable. When a Delegatee in turn acts as a Delegator, it proves its authority by chaining its delegations back to the chain-of-authority by which it was granted its own authority. This chain of ACDCs is held by the Issuee (Delegatee) in their wallet. At the point of use, they can produce a perpetually verifiable proof of issuance without relying on continued interaction with any Issuer in that chain. This more precisely models how paper-credential-based delegations of authority work in the real world.
+An ACDC as a delegation has an *Issuer* AID and an *Issuee* AID. The Issuer is the *Delegator*, and the Issuee is the *Delegatee*. The ACDC type determines what authority is delegated. The ACDC fields designate the AIDs of the Delegator and Delegatee. The underlying KERI/ACDC infrastructure makes that delegation perpetually verifiable. When a Delegatee in turn acts as a Delegator, it proves its authority by chaining its delegations back to the chain-of-authority by which it was granted its own authority. This chain of ACDCs is held by the Issuee (Delegatee) in their wallet. At the point of use, they can produce a perpetually verifiable proof of issuance without relying on continued interaction with any Issuer in that chain. This more precisely models how paper-credential-based delegations of authority work in the real world.
 
 The following diagram shows the SEDI chain of authority, the associated AIDs for each party, and the ACDCs in that issuance chain. The schema for these ACDCs is given in a later section. 
 
@@ -84,23 +84,23 @@ The schema along with an example ACDC for the IAL3 proofing session receipt is p
 
 #### Static Perpetual Proof-of-Issuance versus Dynamic Proof-of-State
 
-When presenting an ACDC, the Citizen as presenter is always able, by design, to present a proof of issuance by the State as issuer of a SEDI ACDC held by the Citizen without an online presence. The proof of issuance is perfectly static and may be stored in the Citizen's wallet and presented on demand without any need for either the Citizen or the verifier of that proof of issuance to contact the state or to have an active internet connection. The proof of issuance may be exchanged using a local peer-to-peer connection. This static proof is perpetual. Changes in the keystate of either or both the State or the Citizen do not affect its verifiability. The Citizen's wallet holds all the proof artifacts needed to provide a proof of issuance at any point in the future for any ACDC issued to that Citizen by the State.
+When presenting an ACDC, the Citizen as presenter is always able, by design, to present a proof of issuance by the State as Issuer of a SEDI ACDC held by the Citizen without an online presence. The proof of issuance is perfectly static and may be stored in the Citizen's wallet and presented on demand without any need for either the Citizen or the *Verifier* of that proof of issuance to contact the state or to have an active internet connection. The proof of issuance may be exchanged using a local peer-to-peer connection. This static proof is perpetual. Changes in the keystate of either or both the State or the Citizen do not affect its verifiability. The Citizen's wallet holds all the proof artifacts needed to provide a proof of issuance at any point in the future for any ACDC issued to that Citizen by the State.
 
-Each ACDC in a SEDI chain of authority as issued by the State is anchored via a seal in the KEL (Key Event Log) of the issuer. The anchor provides a perpetually verifiable proof of authenticity of that issuance. When issued, the Citizen receives a copy of the issuer's KEL up to and including the event with the anchoring seal.  The seal is in one of two forms: In the first the seal contains the SAID (hash) of the ACDC itself.  In the second, the seal contains the SAID (hash) of the event in the state registry of the ACDC.  A state registry enables an ACDC to have dynamic state such as revocation. 
+Each ACDC in a SEDI chain of authority as issued by the State is anchored via a seal in the KEL (Key Event Log) of the Issuer. The anchor provides a perpetually verifiable proof of authenticity of that issuance. When issued, the Citizen receives a copy of the Issuer's KEL up to and including the event with the anchoring seal.  The seal is in one of two forms: In the first the seal contains the SAID (hash) of the ACDC itself.  In the second, the seal contains the SAID (hash) of the event in the state registry of the ACDC.  A state registry enables an ACDC to have dynamic state such as revocation. 
 
-At any later time, the citizen can provide this KEL copy to a verifier. The verifier does not need to know the current state of the Issuer's KEL, only the state up to and including the anchoring seal that proves authentic issuance.  This construction holds for every ACDC in the chain of authority.  This perpetual proof mechanism uses what we call percolated discovery to provide the needed proof artifacts at the time of presentation. No global discovery mechanism is required. No phone home. No direct interaction between the Verifier and the Issuer.
+At any later time, the citizen can provide this KEL copy to a Verifier. The Verifier does not need to know the current state of the Issuer's KEL, only the state up to and including the anchoring seal that proves authentic issuance.  This construction holds for every ACDC in the chain of authority.  This perpetual proof mechanism uses what we call percolated discovery to provide the needed proof artifacts at the time of presentation. No global discovery mechanism is required. No phone home. No direct interaction between the Verifier and the Issuer.
 
-When an ACDC has dynamic state, such as revocability, the Issuer dynamically updates the registry that maintains that state.  In this case, the verifier must obtain a copy of that state. This means the resolution of dynamic state updates depends on how often the verifier refreshes its cache of the dynamic state, aka the registry state.
+When an ACDC has dynamic state, such as revocability, the Issuer dynamically updates the registry that maintains that state.  In this case, the Verifier must obtain a copy of that state. This means the resolution of dynamic state updates depends on how often the Verifier refreshes its cache of the dynamic state, aka the registry state.
 
-To clarify, ACDCs that do not have dynamic state, i.e., are non-revocable but may have expiration dates, have perfectly static proofs of issuance.  There is no dynamic caching required.  Whereas ACDCs that do have dynamic state, i.e. are dynamically revocable, with or without expiration dates, have a registry controlled by the issuer. A verifier needs to know the registry's current state to determine whether the ACDC has been revoked.  This is independent of its static proof of authentic issuance.
+To clarify, ACDCs that do not have dynamic state, i.e., are non-revocable but may have expiration dates, have perfectly static proofs of issuance.  There is no dynamic caching required.  Whereas ACDCs that do have dynamic state, i.e. are dynamically revocable, with or without expiration dates, have a registry controlled by the Issuer. A Verifier needs to know the registry's current state to determine whether the ACDC has been revoked.  This is independent of its static proof of authentic issuance.
 
-Cache timing and refresh design becomes part of the ecosystem governance framework to account for applications where a verifier might not be able to update its cached copy of the registry state for some time (hours or days). The legal policy in those cases needs to be defined.
+Cache timing and refresh design becomes part of the ecosystem governance framework to account for applications where a Verifier might not be able to update its cached copy of the registry state for some time (hours or days). The legal policy in those cases needs to be defined.
 
-The diagram above shows two infrastructure services relevant to ACDC dynamic state registries. The first is a Registrar service. This service is maintained by any issuer of any ACDCs with dynamic state. The second is an Observer network. Verifiers of ACDCs with dynamic state maintain this. The Observer network caches ACDC state with a cache refresh period (which may be specific to a given ACDC type, as determined by its Ecosystem Governance Framework). When a verifier receives a presentation from a Citizen of a SEDI ACDC or graph (chain) of ACDCs where any have dynamic state and hence have a registry, the verifier consults the observer network to find the latest state for that ACDC so presented. 
+The diagram above shows two infrastructure services relevant to ACDC dynamic state registries. The first is a Registrar service. This service is maintained by any Issuer of any ACDCs with dynamic state. The second is an Observer network. Verifiers of ACDCs with dynamic state maintain this. The Observer network caches ACDC state with a cache refresh period (which may be specific to a given ACDC type, as determined by its Ecosystem Governance Framework). When a Verifier receives a presentation from a Citizen of a SEDI ACDC or graph (chain) of ACDCs where any have dynamic state and hence have a registry, the Verifier consults the observer network to find the latest state for that ACDC so presented. 
 
-Suppose, for example, that driver's licenses have a validity resolution of one day. That means a revoked driver's license is invalid for the next 24-hour period beginning at midnight on the day the State issues the revocation event. The revocation takes effect the next day. This is the revocation date. To catch any driver's license revocations without loss, the observer contacted by that verifier must refresh its caches at midnight each day.  Then, even if a network outage occurs during the next 24-hour period, the observer will correctly report the revocation state. Special allowance may be made for law enforcement operating in network-denied environments that prevent them from updating their observer caches for periods longer than 24 hours.
+Suppose, for example, that driver's licenses have a validity resolution of one day. That means a revoked driver's license is invalid for the next 24-hour period beginning at midnight on the day the State issues the revocation event. The revocation takes effect the next day. This is the revocation date. To catch any driver's license revocations without loss, the observer contacted by that Verifier must refresh its caches at midnight each day.  Then, even if a network outage occurs during the next 24-hour period, the observer will correctly report the revocation state. Special allowance may be made for law enforcement operating in network-denied environments that prevent them from updating their observer caches for periods longer than 24 hours.
 
-The observer network's main purpose is to isolate requests from verifiers of dynamic ACDC state at the point of validation from the Issuer. The observer network prevents the State from observing, without legally repressed collusion with Observers, when, where, and to whom a Citizen presents their SEDI ACDCs.The Registrar updates the observer network in bulk, thereby providing herd privacy to the observer network. 
+The observer network's main purpose is to isolate requests from Verifiers of dynamic ACDC state at the point of validation from the Issuer. The observer network prevents the State from observing, without legally repressed collusion with Observers, when, where, and to whom a Citizen presents their SEDI ACDCs.The Registrar updates the observer network in bulk, thereby providing herd privacy to the observer network. 
 
 ## ACDC Graduated Disclosure
 
@@ -108,13 +108,13 @@ The ACDC specification details the graduated disclosure mechanisms in the ACDC p
 
 At a high level, an ACDC has properties similar to a Merkle tree: it is a hash (cryptographic digest) tree that enables proof of inclusion for a given node or leaf on one branch of the tree without disclosing nodes or leaves on other branches. Unlike a binary Merkle tree, an ACDC is an M-ary tree.  An ACDC has a much more flexible arrangement of nodes, branches, and leaves as well. This makes ACDCs better suited to more complex hierarchical data semantics. 
 
-The important property shared with a Merkle Tree is that a cryptographic commitment to the root hash (SAID) of an ACDC (Merkle root) makes a verifiable tamper-evident commitment to the whole tree. This means that the Issuer of an ACDC can make a verifiable commitment to everything in the ACDC by merely anchoring the SAID of that ACDC in its KEL.  Later, an ACDC presenter can disclose parts of the tree while withholding others. We call this nested partial disclosure. A verifier can verify that a given partial disclosure expansion always collapses to the same ACDC root hash (SAID) committed to by the Issuer.  
+The important property shared with a Merkle Tree is that a cryptographic commitment to the root hash (SAID) of an ACDC (Merkle root) makes a verifiable tamper-evident commitment to the whole tree. This means that the Issuer of an ACDC can make a verifiable commitment to everything in the ACDC by merely anchoring the SAID of that ACDC in its KEL.  Later, an ACDC presenter can disclose parts of the tree while withholding others. We call this nested partial disclosure. A Verifier can verify that a given partial disclosure expansion always collapses to the same ACDC root hash (SAID) committed to by the Issuer.  
 
 In addition to nested partial disclosure, ACDCs optionally support a flat selective disclosure mechanism based on an array of attributes. Because many other verifiable credential formats use the term "selective disclosure" to refer to a selectively disclosable array of attributes, the ACDC specification uses "selective disclosure" only for the array of attributes, while the hierarchical Merkle Tree-like construction is called nested partial disclosure.
 
 The term SAID stands for Self-Addressing IDentifier. It is defined in the CESR specification. Basically, it is a normative mechanism for embedding a cryptographically agile digest in any field-map data structure. This provides a universally unique content-addressable identifier for the data structure. Because a serialization cannot include a digest of the serialization, the SAID protocol uses a dummy set of characters to compute the digest, then replaces them with the resulting digest. This process is reversible. The SAID protocol enables ACDCs to convert any nested field map into a Merkle-Tree-like construction.
 
-An ACDC in whole or in part can be collapsed into and expanded from its  SAIDs. This means ACDCs can protect privacy via nested partial disclosure.  Successive application of nested partial disclosure is a graduated disclosure process that lets a discloser place the disclosed data under contractual protection before full disclosure.
+An ACDC in whole or in part can be collapsed into and expanded from its  SAIDs. This means ACDCs can protect privacy via nested partial disclosure.  Successive application of nested partial disclosure is a graduated disclosure process that lets a Discloser place the disclosed data under contractual protection before full disclosure.
 
 At the top level of an ACDC is its root hash or SAID. There are other top-level attributes. An ACDC has four sections as follows: 
 - Schema Section. This is typically represented via the SAID or $id of the JSON Schema. It can be the full schema, but schemas are typically well known and cached, so only the SAID needs to be provided.
@@ -126,7 +126,7 @@ The following diagram shows the nested partial disclosure structure of an ACDC.
 
 ![ACDC_Mary_Hashtree](assets/ACDC_Mary_Hashtree.png)
 
-As an M-ary hash tree, the ACDC can be compacted (collapsed) into its top-level "Root" SAID using what the specification calls the most-compact SAID algorithm. This top-level SAID acts equivalently to the Root Hash of a Merkle Tree.  Any correct partial expansion of the ACDC that discloses one or more branches or partial branches will also always collapse into the same top-level SAID. Thus, an inclusion proof for some set of nodes and leaves in the ACDC M-ary hash tree consists of a partial disclosure which the verifier then collapses using the ACDC most compact SAID algorithm into the top-level "root" SAID. If the resulting collapsed SAID matches the published ACDC SAID, then the partial disclosure satisfies the inclusion proof. This enables a very powerful, flexible hierarchical structuring of the Attribute, Edge, and Rule sections of the ACDC to best match the use cases for graduated disclosure of the associated data.
+As an M-ary hash tree, the ACDC can be compacted (collapsed) into its top-level "Root" SAID using what the specification calls the most-compact SAID algorithm. This top-level SAID acts equivalently to the Root Hash of a Merkle Tree.  Any correct partial expansion of the ACDC that discloses one or more branches or partial branches will also always collapse into the same top-level SAID. Thus, an inclusion proof for some set of nodes and leaves in the ACDC M-ary hash tree consists of a partial disclosure which the Verifier then collapses using the ACDC most compact SAID algorithm into the top-level "root" SAID. If the resulting collapsed SAID matches the published ACDC SAID, then the partial disclosure satisfies the inclusion proof. This enables a very powerful, flexible hierarchical structuring of the Attribute, Edge, and Rule sections of the ACDC to best match the use cases for graduated disclosure of the associated data.
 
 Consider the following example of a fully disclosed SEDI Core Identity ACDC:
 
@@ -293,7 +293,7 @@ Please notice that each SAIDed field map has a SAID `d` field and a unique entro
 
 Technically, this is a type of zero-knowledge proof (ZKP) that operates similarly to a Merkle tree. It proves the disclosed data is correct without revealing or leaking any undisclosed data.
 
-The discloser can then choose which parts to disclose to different verifiers as needed, with provable disclosures, without leaking any data not yet disclosed.
+The Discloser can then choose which parts to disclose to different Verifiers as needed, with provable disclosures, without leaking any data not yet disclosed.
 
 For example, suppose a given presentation only needs to disclose the `legalPresenceStatus` and `expirationDate` fields. The following partial disclosure would be provably correct without leaking any of the other nested field map attributes, only their SAIDs.
 
@@ -361,9 +361,9 @@ The following table provides the schema ID  `$id` field and a description. ACDCs
 
 | Schema SAID $id | ACDc Description |
 |:--|---|
-| ELjJlSaExu9ss766dDpQoLE5aT6-wIRyR72X5YLC3ILc | SEDI Organizational Unit Authority Delegation |
+| EBbOpBe0lP_epHhakeiXdOmeal3leDfLRf0PAItsanoQ | SEDI Organizational Unit Authority Delegation |
 | EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v | SEDI Issuing Agent Authority Delegation |
-| N0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY- | SEDI Citizen Core Identity Attributes|
+| EN0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY- | SEDI Citizen Core Identity Attributes|
 | EH5hn7CbtDFxhS3IKioC8P-e4YyZoxqzhRpr4X_e32BD | SEDI Citizen Residence Address Attributes|
 | EPqXrwPT6b0_KghrrMuIdmuD68Aytv1XK6jU86EumgJV | SEDI Citizen Age Threshold Attributes|
 | EKuGAkHNpj5ujsEWQuZFe8bbuSrIOwojUNjgirDtWIAb | SEDI Citizen High Resolution Image Biometric Proof |
@@ -381,10 +381,10 @@ The following table provides the schema ID  `$id` field and a description. ACDCs
 This defines an ACDC that the State's root-of-trust AID or root AID issues to delegate an Organizational Unit AID within the State hierarchy. Typically, an organizational unit is at a department, division, or program level within the State.
 
 ```python
-UnitSchemaSaid = 'ELjJlSaExu9ss766dDpQoLE5aT6-wIRyR72X5YLC3ILc'
+UnitSchemaSaid = 'EBbOpBe0lP_epHhakeiXdOmeal3leDfLRf0PAItsanoQ'
 UnitSchema = \
 {
-  '$id': 'ELjJlSaExu9ss766dDpQoLE5aT6-wIRyR72X5YLC3ILc',
+  '$id': 'EBbOpBe0lP_epHhakeiXdOmeal3leDfLRf0PAItsanoQ',
   '$schema': 'https://json-schema.org/draft/2020-12/schema',
   'title': 'SEDI Organizational Unit Schema',
   'description': 'SEDI Oganizational Unit JSON Schema for acm ACDC.',
@@ -3027,7 +3027,7 @@ BespokeSchema = \
   },
   'r': 
   {
-    d': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
     'l': ''
   }
 }
@@ -3360,7 +3360,7 @@ IarSchema = \
 
 ```python
 {
-  'v': 'ACDCCAACAAJSONAAMR.',,
+  'v': 'ACDCCAACAAJSONAAMR.',
   't': 'acm',
   'd': 'EByqzW5jFrrXhC_b9jYkHJaWAoc3L5GTqmmWUnq4KGQ9',
   'u': '0ABndXlzZWRpY2hhbGxlbmdl',
@@ -3393,4 +3393,1147 @@ IarSchema = \
 ```
 
 
+
 ## SEDI ACDC Usage Examples
+
+Before any sensitive ACDC content is delivered, the two parties negotiate and must agree on a *disclosure plan*: which ACDCs in the exchange, and which parts of those ACDCs, will be revealed. This is accomplished by naming the paths into a *DAG*—a linked set of ACDCs disclosed together (see DAG below). An *issuance* disclosure plan always includes the whole credential for disclosure, while a *presentation* disclosure plan may include the whole credential, or only selected parts of the crediential, as designated by specific paths of the credential graph (see DAG section below). For example, a presentation may disclose only citizenship status without including the Holder's name.
+
+### IPEX
+
+IPEX (Issuance and Presentation Exchange) is the exchange protocol for this negotiation. An IPEX negotiation is a series of KERI exchange messages between two parties: an opening `xip` (exchange inception), then subsequent `exn` (exchange) messages that continue that transaction. IPEX is not a message type of its own; it is a meta-protocol that defines *routes* on those messages so the parties can hold an issuance or a presentation conversation. The same message sequence covers both issuance and presentation.
+
+#### Issuance
+
+*Issuance* is the IPEX exchange in which an Issuer delivers a newly issued ACDC to its Issuee. It is two-party. Disclosure is full: the Issuee already knows the attributes and must be able to read the whole credential before accepting it. Offer and agree still run so the Issuee can confirm that the Issuer got those attributes right before the grant.
+
+#### Presentation
+
+*Presentation* is the IPEX exchange in which a *Holder* discloses one or more already-issued ACDCs to a Verifier. Only the Holder and the Verifier need take part in the exchange. The Issuer of those ACDCs need not be online and need not be a signer on the presentation. The Issuer could also be the Verifier. Presentation may be partial: the disclosure plan names only the paths the Verifier needs.
+
+Every IPEX step carries a routed envelope with sender, receiver, route, query, and attributes. The opening message is always a KERI `xip`; every subsequent message in that negotiation is an `exn`.
+
+Shared fields on both:
+
+| Field | Role |
+|:--|:--|
+| `i` | Sender AID |
+| `ri` | Receiver AID |
+| `r` | Route that selects the IPEX step (`/ipex/apply`, `/ipex/offer`, and so on) |
+| `q` | Query section; holds the disclosure plan at `q.dp` when the step negotiates paths |
+| `a` | Attribute section; holds the human message, origin SAID(s), and anchoring flag |
+
+`xip` also carries:
+
+| Field | Role |
+|:--|:--|
+| `u` | Unique entropy so the exchange-inception SAID is unguessable |
+| `d` | Message SAID; this value *is* the transaction identifier for the negotiation |
+
+`exn` also carries:
+
+| Field | Role |
+|:--|:--|
+| `x` | Transaction identifier — the SAID `d` of the opening `xip` |
+| `p` | Prior message SAID (the `d` of the `xip` or `exn` this step answers) |
+
+The defined steps of IPEX negotiation are described in detail in the *Exchange Steps* section below, but in short, they are the following:
+
+- *apply* — request a disclosure
+- *offer* — propose the credentials and terms that would satisfy that disclosure
+- *agree* — accept a specific offer
+- *grant* — deliver the negotiated ACDCs plus proofs
+- *admit* — acknowledge receipt of the grant
+- *spurn* — reject and end the exchange (on apply, offer, agree, or a bare unsolicited grant)
+
+IPEX exchanges do not necessarily include all of these; an exchange may open with apply, offer, or grant. Whichever step opens the flow is an `xip`; its SAID `d` becomes the transaction identifier. Every subsequent message is an `exn` that copies that identifier into `x` and sets `p` to the SAID of the message it answers. Parties do not copy payloads forward; they chain by SAID.
+
+The disclosure plan is passed in the query section of the exchange message (`q.dp`), which is a list of triples, one per ACDC involved in the disclosure:
+
+```text
+(schema SAID, prefix, [paths])
+```
+
+The *schema SAID* is published with the schema and identifies the ACDC type. The *prefix* places that ACDC in the DAG: `"/"` for the origin (the only legal origin prefix), or a DAG-absolute edge path that starts and ends with `/` and terminates at a far-node hop `/_/` (for example `"/e/utahAgent/_/"`). The *paths* list names the sections or fields to disclose under that prefix. A sole empty-string path (`[""]`) requests the whole selected ACDC; an empty list (`[]`) permits any valid compaction level. Paths into an aggregate section must include the element index (for example `"A/4/over13"`, not `"A/over13"`). The zeroth triple is always the *origin*—the source node of the DAG for this exchange. Later triples are the other ACDCs in the graph, in breadth-first order from that origin, with each node appearing once.
+
+#### Discloser and Disclosee
+
+Both issuance and presentation are disclosures. The *Discloser* is the party that holds or controls the ACDC data and may reveal it. The *Disclosee* is the party that requests or receives that disclosure. In an issuance, the Issuer is the Discloser and the Issuee is the Disclosee. In a presentation, the Holder is the Discloser and the Verifier is the Disclosee.
+
+#### Disclosure Plan
+
+As previously stated, an IPEX exchange may include a disclosure plan, designated as `q.dp` on the exchange-message envelope (`xip` or `exn`). `q.dp` appears on apply and offer, where the plan is negotiated.  On an offer, `q.dp` may be empty if the Discloser agrees to the apply's plan.  Empty `q.dp` on offer indicates a *ditto* of the apply's `q.dp`, provided that all other fields and verifications are valid. 
+
+Grant does not restate `q.dp`; it delivers the ACDC variant(s) that satisfy the agreed plan, or that the Discloser is willing to disclose in the case of an exchange that opens with a grant. Nested ACDC bodies travel with the offer or grant as attached CESR streams; their instance SAIDs appear in `a.o`. Registry proofs that show dynamic state (such as revocation status) are attached on the grant, not earlier.
+
+#### DAG
+
+A *DAG* (Directed Acyclic Graph) is a set of linked ACDCs disclosed together in one IPEX exchange. Edges between ACDCs form the links. The origin is the source node of that graph for the exchange--the ACDC named first in `q.dp` and in `a.o`, not the Root AID of the chain of authority. A Verifier follows edges from the origin through the disclosed nodes. A bespoke presentation ACDC is one way to make several SEDI credentials share a single origin.
+
+The figure below is a generic disclosure DAG. Each box is an ACDC (an entity in the graph). Each arrow is an edge (a directed relationship from a near ACDC to a far ACDC). The Verifier starts at the origin and walks outbound edges; there are no cycles.
+
+```mermaid
+flowchart TD
+  origin["Origin ACDC"]
+  nodeA["ACDC A"]
+  nodeB["ACDC B"]
+  nodeC["ACDC C"]
+  origin -->|"edge"| nodeA
+  origin -->|"edge"| nodeB
+  nodeA -->|"edge"| nodeC
+```
+
+In a SEDI presentation, A and B might be entitlements the Holder discloses together, and C a supporting credential reached only through A (for example, a leaf that edges to Core). The same shape applies whether the origin is a leaf credential or a bespoke ACDC.
+
+#### Exchange Steps
+
+The usual IPEX sequence is apply → offer → agree → grant → admit. Either party may terminate with spurn at apply, offer, or agree, and may also spurn a bare unsolicited grant. The initiating steps are apply, offer, and grant (a flow may open on any of those). An initiating step that opens the flow is always an `xip`; a step that answers a prior message is always an `exn`.
+
+*Apply* is the Disclosee's request. It carries the disclosure plan in `q.dp` and may require anchoring (`a.ax`). Apply can only open a solicited flow, so it is always an `xip`; its SAID `d` is the transaction identifier that later `exn` messages copy into `x`.
+
+*Offer* is the Discloser's proposal. It names the origin ACDC SAID(s) in `a.o` and may carry a metadata or full ACDC body. When it answers an apply, it is an `exn` (`x` = apply's `d`, `p` = apply's `d`) and an omitted disclosure plan inherits the apply's `q.dp`. An offer may also open an unsolicited flow with no prior apply; that opening offer is an `xip`. The Disclosee uses the offer to inspect terms and (for issuance) the full attributes before committing.
+
+*Agree* is the Disclosee's acceptance of a specific offer. It is always an `exn`. It signs the offer's SAID. There is no new ACDC. When the offer required anchoring, agree echoes that requirement and seals the agreement.
+
+*Grant* is the Discloser's delivery of the negotiated ACDC variant(s), with registry proofs attached when the ACDC has an issuance registry. When it continues a negotiation, it is an `exn` whose prior is normally the agree (or the apply, when the parties skip offer and agree). A bare unsolicited grant opens the flow and is therefore an `xip`. The grant does not restate `q.dp`. The grant is already verifiable; admit is not required for validity.
+
+*Admit* is the Disclosee's acknowledgement of a grant. It is always an `exn`. It settles the exchange from the Disclosee's side and may seal that acknowledgement.
+
+*Spurn* is either party's rejection. It is always an `exn`. It ends the exchange at apply, offer, or agree without a grant, and may also reject a bare unsolicited grant (an opening grant `xip`).
+
+### IPEX builders in keripy
+
+`keri.acdc` exports a builder for each exchange step. The examples below import them under `ipex*` aliases:
+
+```python
+from keri.acdc import (
+    apply as ipexApply,
+    offer as ipexOffer,
+    agree as ipexAgree,
+    grant as ipexGrant,
+    admit as ipexAdmit,
+    spurn as ipexSpurn,
+)
+```
+
+Each builder returns `(serder, atc)`: the signed exchange serder and its detached attachment bytes. Opening builders (`ipexApply`, and `ipexOffer` / `ipexGrant` when they start a flow) produce an `xip`; the others produce an `exn`. Important fields:
+
+| Field | Role |
+|:--|:--|
+| `t` | Message type: `xip` on the opener, `exn` on every follow-on |
+| `r` | Route (`/ipex/apply`, `/ipex/offer`, `/ipex/agree`, `/ipex/grant`, `/ipex/admit`, `/ipex/spurn`) |
+| `d` | Message SAID; on an opening `xip`, this value is the transaction identifier |
+| `u` | Unique entropy on `xip` only |
+| `x` | Transaction identifier on `exn` only (the opening `xip`'s `d`) |
+| `p` | Prior message SAID on `exn` only |
+| `q.dp` | Disclosure plan (required on apply; offer may inherit or override; grant does not carry it) |
+| `a.m` | Human-readable message |
+| `a.o` | SAID(s) of the origin ACDC(s) being offered or granted |
+| `a.ax` | Anchoring requirement (`[True]` seals the commitment in a KEL) |
+
+Later builders take the prior exchange as a `Serder` (`apply=`, `offer=`, `agree=`, `grant=`). When that prior is an opening `xip`, follow-on builders set `x` from its SAID `d`. Habitats in the snippets are ordinary `Hab` instances named for their role (`root`, `org`, `agentA`, `citizen`, `verifier`, and so on).
+
+### Delivering and retrieving exchanges
+
+Builders only create the signed stream. Each party runs an `Exchanger` with the IPEX handlers from `keri.acdc`, then feeds that stream through a `Kevery`/`Parser` so the peer store accepts and indexes it. The counterparty then loads the stored exchange by SAID with `cloneMessage` and passes that `Serder` into the next builder.
+
+```python
+from keri.acdc import loadHandlers
+from keri.core import Kevery, Kramer, Parser
+from keri.peer import Exchanger, cloneMessage
+from keri import Vrsn_2_0
+
+exc = Exchanger(hby=hby, handlers=[])
+loadHandlers(hby=hby, exc=exc, notifier=notifier, rgy=rgy)
+kvy = Kevery(db=hby.db, lax=False, local=False, kramer=Kramer(db=hby.db, cf=cf), exc=exc)
+
+apply, applyAtc = ipexApply(...)
+ims = bytearray(apply.raw)
+ims.extend(applyAtc)
+Parser(version=Vrsn_2_0).parse(ims=ims, kvy=peerKvy)  # peer Kevery
+
+apply, _ = cloneMessage(peerHby, apply.said)  # Serder for ipexOffer(..., apply=apply)
+```
+
+The examples below omit repeating that delivery boilerplate on every step. When a snippet writes `apply=apply`, read it as the prior apply `Serder`—either the builder return still in hand, or the result of `cloneMessage` after the peer parsed the stream.
+
+### Issuance over IPEX
+
+Before the IPEX exchange, the Issuer creates registry state for the credential with `Registrar` from `keri.acdc`. For the Organizational Unit credential:
+
+Open a registrar on the Root AID's registry store and create the issuance registry. `makeRegistry` writes the registry inception (`rip`); its SAID is the credential's `rd`.
+
+```python
+from keri.acdc import Registrar
+from keri import Vrsn_2_0
+
+rootRegistrar = Registrar(rgy=rootRgy)
+unitRegistry = rootRegistrar.makeRegistry(
+    name="unit-issuer-registry",
+    prefix=root.pre,
+)
+unitRip = rootRgy.store.event(unitRegistry.regk)
+```
+
+Seal that `rip` in the Root AID's KEL, then tell the registry the seal is in place:
+
+```python
+unitRipAnchor = root.interact(
+    data=[dict(i=unitRegistry.regk, s=unitRip.sad["n"], d=unitRip.said)],
+    framed=True,
+    gvrsn=Vrsn_2_0,
+)
+unitRegistry.anchorMsg(unitRip.said)
+```
+
+Issue the ACDC into the registry. `issue` returns `(blinder, serder)`: `unitProof` is the issuance blinder (the registry proof used later on the grant); `unitIssued` is the blinded update event (`bup`).
+
+```python
+unitProof, unitIssued = rootRegistrar.issue(unitRegistry, acdc=unit)
+```
+
+Seal that update in the Root AID's KEL the same way:
+
+```python
+unitIssuedAnchor = root.interact(
+    data=[dict(i=unitRegistry.regk, s=unitIssued.sad["n"], d=unitIssued.said)],
+    framed=True,
+    gvrsn=Vrsn_2_0,
+)
+unitRegistry.anchorMsg(unitIssued.said)
+```
+
+The offer carries the full ACDC body so the Issuee can inspect it before agreeing. Pass `artifacts=[]` for that: an empty list means "attach the origin and nothing else." Omitting `artifacts` (`None`) leaves only the origin SAID in `a.o` with no nested body.
+
+```python
+offer, offerAtc = ipexOffer(
+    hab=root,
+    message="Offer the Organizational Unit delegation",
+    origin=unit,
+    artifacts=[],                # attach full origin body for issuance
+    apply=apply,
+    ax=[True],
+)
+```
+
+The grant carries the same ACDC with `unitProof` attached:
+
+```python
+from keri.core import messagize
+
+proofedUnit = messagize(
+    serder=unit,
+    bonds=[unitProof.data],
+    framed=False,
+    gvrsn=Vrsn_2_0,
+)
+grant, grantAtc = ipexGrant(
+    hab=root,
+    recp=org.pre,
+    message="Grant the Organizational Unit delegation",
+    origin=proofedUnit,
+    agree=agree,
+    ax=[True],
+)
+```
+
+### Example 1: Organizational Unit delegation
+
+This first example is the State chain of authority: the Root AID issues an Organizational Unit delegation, and that Organizational Unit AID issues Issuing Agent delegations to Issuing Agent A and Issuing Agent B.
+
+```python
+apply, applyAtc = ipexApply(
+    hab=org,
+    recp=root.pre,
+    message="Issue the Organizational Unit delegation",
+    modifiers=dict(dp=[[[UnitSchemaSaid, "/", [""]]]]),
+    ax=[True],
+)
+offer, offerAtc = ipexOffer(
+    hab=root,
+    message="Offer the Organizational Unit delegation",
+    origin=unit,
+    artifacts=[],                # full disclosure for issuance
+    apply=apply,
+    ax=[True],
+)
+agree, agreeAtc = ipexAgree(
+    hab=org,
+    message="Agree to the Organizational Unit delegation",
+    offer=offer,
+)
+grant, grantAtc = ipexGrant(
+    hab=root,
+    recp=org.pre,
+    message="Grant the Organizational Unit delegation",
+    origin=proofedUnit,          # unit plus registry proof
+    agree=agree,
+    ax=[True],
+)
+admit, admitAtc = ipexAdmit(
+    hab=org,
+    message="Organizational Unit delegation received",
+    grant=grant,
+)
+```
+
+The offered and granted body:
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAIn.',
+  't': 'acm',
+  'd': 'EIojbncOpuCoMFWZSutjfkLf5KNu_nbCOsqgFClk3SMK',
+  'u': '0AAxOP-l4O8GZPbv7dQBeNfM',
+  'i': 'EAN4gwVu_a9EDxFn-camF6OoQvZAvi-_FyluyyZFKzs5',
+  'rd': 'EA3Y6LeoyNFjnLS1xZoRQnzX0fWgUw0XjD4IgIf8ZHxD',
+  's': 'EBbOpBe0lP_epHhakeiXdOmeal3leDfLRf0PAItsanoQ',
+  'a':
+  {
+    'd': 'EHydQsy-4di85pJaiPqVN9_APpLtU15QXcmVFEN2FQE-',
+    'u': '0AAk4UxXJc8mbqWSdtAPkK6w',
+    'i': 'EMrUfTuv8j3vBVAgPSlDi1D_o35F5uwsIAWjBatLhK9E',
+    'issuedDate': '2020-08-01T00:00:00.000000+00:00',
+    'unit': 'SediProgramOffice'
+  },
+  'r':
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX',
+    'l': ''
+  }
+}
+```
+
+Root AID issuance registry (`rd` above):
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAADa.',
+  't': 'rip',
+  'd': 'EA3Y6LeoyNFjnLS1xZoRQnzX0fWgUw0XjD4IgIf8ZHxD',
+  'u': '0ACIMnBibvjpJYvhw5cN26jp',
+  'i': 'EAN4gwVu_a9EDxFn-camF6OoQvZAvi-_FyluyyZFKzs5',
+  'n': '0',
+  'dt': '2026-09-01T08:30:00.000000+00:00'
+}
+```
+
+### Issuing Agent delegations
+
+The Organizational Unit AID runs the same full-disclosure exchange twice: once to Issuing Agent A and once to Issuing Agent B.
+
+```python
+apply, applyAtc = ipexApply(
+    hab=agentA,                  # Issuing Agent A or B
+    recp=org.pre,
+    message="Issue the Issuing Agent delegation",
+    modifiers=dict(dp=[[
+        [AgentSchemaSaid, "/", [""]],
+        [UnitSchemaSaid, "/e/orgUnit/_/", [""]],
+    ]]),
+    ax=[True],
+)
+offer, offerAtc = ipexOffer(
+    hab=org,
+    message="Offer the Issuing Agent delegation",
+    origin=agent,                # agent ACDC
+    artifacts=[unit],            # Unit node named by the Agent edge
+    apply=apply,
+    ax=[True],
+)
+agree, agreeAtc = ipexAgree(
+    hab=agentA,
+    message="Agree to the Issuing Agent delegation",
+    offer=offer,
+)
+grant, grantAtc = ipexGrant(
+    hab=org,
+    recp=agentA.pre,
+    message="Grant the Issuing Agent delegation",
+    origin=proofedAgent,         # agent plus registry proof
+    artifacts=[proofedUnit],
+    agree=agree,
+    ax=[True],
+)
+admit, admitAtc = ipexAdmit(
+    hab=agentA,
+    message="Issuing Agent delegation received",
+    grant=grant,
+)
+```
+
+Issuing Agent A:
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAO9.',
+  't': 'acm',
+  'd': 'EOD4QiWo1oa6UtiEr456Lu0ba3v1Cmd6qOPoRbAdx2hD',
+  'u': '0ACpkR3a0WoJk8BHz4M6aZVo',
+  'i': 'EMrUfTuv8j3vBVAgPSlDi1D_o35F5uwsIAWjBatLhK9E',
+  'rd': 'EEy3daQxc9NrgzA1V7KjgOqLF_te2gs2-sYElTHsPzYE',
+  's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+  'a':
+  {
+    'd': 'EFPQAD6XLlU9bnNPMWfjl1Q-Rf20Jwoip_1lkp8XGKKt',
+    'u': '0ADtdKN8DlnUKUFDN47QKfNj',
+    'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+    'issuedDate': '2020-08-01T00:00:00.000000+00:00',
+    'role': 'SediIssuingAgent',
+    'name':
+    {
+      'd': 'EJj1BPhB8uGFLA8QtNjNJ9MXJ8fvOliIWj5w7YLzReWI',
+      'u': '0AC0eUUAKHVXdJMDVXtx1yS3',
+      'value': 'Susan Park'
+    }
+  },
+  'e':
+  {
+    'd': 'EIZC3vk0dgDvZNV3Vf1z3mav0HkMbGHq0vxm7NcbC6WP',
+    'u': '0AB4w_WXy8JmoUebF1aEnOD_',
+    'orgUnit':
+    {
+      'd': 'ENZvB2t1Tit1Z2PSSebS70IKEq33JynJrWK-rjR_cSMA',
+      'u': '0ABl8aVsQRgBVSWnMQcwgDQ7',
+      'n': 'EIojbncOpuCoMFWZSutjfkLf5KNu_nbCOsqgFClk3SMK',
+      's': 'EBbOpBe0lP_epHhakeiXdOmeal3leDfLRf0PAItsanoQ',
+      'o': 'DI2I'
+    }
+  },
+  'r':
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX',
+    'l': ''
+  }
+}
+```
+
+Issuing Agent B:
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAO_.',
+  't': 'acm',
+  'd': 'EB4QhQdELR7HN6ACcRc-OeOa1x-AsXicNwXOXzZ4r5LC',
+  'u': '0ABRWAE2yQo78JgmLSXZgi0w',
+  'i': 'EMrUfTuv8j3vBVAgPSlDi1D_o35F5uwsIAWjBatLhK9E',
+  'rd': 'EEy3daQxc9NrgzA1V7KjgOqLF_te2gs2-sYElTHsPzYE',
+  's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+  'a':
+  {
+    'd': 'EK4yVDaY7-RHcZY2A9RTG-eWUwJoz_STt6sxRlyzD7-B',
+    'u': '0ACjOOUKZ3okNszGhHdnBchS',
+    'i': 'EDOP0lrGzY0VdsRfbcLhOTYw0yrYrtglnGoJsScZtY5o',
+    'issuedDate': '2020-08-01T00:00:00.000000+00:00',
+    'role': 'SediIssuingAgent',
+    'name':
+    {
+      'd': 'EO7zg2QSbE3-T8xGVL_xwLE7GtYgtoV6sIt2N1FVF3JR',
+      'u': '0ABN-CzDURbSM3EjAePWcHOm',
+      'value': 'Stuart Black'
+    }
+  },
+  'e':
+  {
+    'd': 'EEVW-O8vTUxjWtuCbmi5sHBhOF62-KisJhyktfjfKGq2',
+    'u': '0AAF4JG4eocE4N4jHM27t-7b',
+    'orgUnit':
+    {
+      'd': 'EAysG1wMMIUdB4V9u3aWda69qz4i__DlU7T2CUrsLwqs',
+      'u': '0AC1Kv67R7HVQnoicXf5XVbK',
+      'n': 'EIojbncOpuCoMFWZSutjfkLf5KNu_nbCOsqgFClk3SMK',
+      's': 'EBbOpBe0lP_epHhakeiXdOmeal3leDfLRf0PAItsanoQ',
+      'o': 'DI2I'
+    }
+  },
+  'r':
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX',
+    'l': ''
+  }
+}
+```
+
+Organizational Unit issuance registry (anchors both Issuing Agent credentials):
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAADa.',
+  't': 'rip',
+  'd': 'EEy3daQxc9NrgzA1V7KjgOqLF_te2gs2-sYElTHsPzYE',
+  'u': '0AC-owO6qg3aecNmUKdDl8mm',
+  'i': 'EMrUfTuv8j3vBVAgPSlDi1D_o35F5uwsIAWjBatLhK9E',
+  'n': '0',
+  'dt': '2026-09-01T08:30:00.000000+00:00'
+}
+```
+
+Issuing Agent A and Issuing Agent B each also establish an issuance registry for the entitlements they will issue later:
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAADa.',
+  't': 'rip',
+  'd': 'EDOfxmEeOsWdi5ZQyuy98W4s15vmV1RWVFuqm4GZflTn',
+  'u': '0ADX782wlYptYlK0MqR6ebA-',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'n': '0',
+  'dt': '2026-09-01T08:30:00.000000+00:00'
+}
+```
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAADa.',
+  't': 'rip',
+  'd': 'ELm6OhvWprcGl8Ej8rpJXivzAl0NwaVpvwI8V7REHZMm',
+  'u': '0AAtbntD2ZNlbN7tnOfYrTIy',
+  'i': 'EDOP0lrGzY0VdsRfbcLhOTYw0yrYrtglnGoJsScZtY5o',
+  'n': '0',
+  'dt': '2026-09-01T08:30:00.000000+00:00'
+}
+```
+
+### Example 2: Identity assurance receipt
+
+This second example is the IAL3 proofing session that opens a Citizen's SEDI lifecycle. A Proofing Agent challenges the Citizen out of band (the Citizen's AID and a salty nonce also travel out of band, so a man in the middle cannot substitute another AID). The Citizen anchors that challenge in an interaction event in their KEL. The Proofing Agent finishes identity assurance and issues a registry-less Identity Assurance Receipt (IAR): the receipt's unique entropy is the challenge itself, and the Agent authenticates it with a signature rather than an issuance registry or KEL seal. That choice matches the operational constraint that Proofing Agents are not full wallets; it also means the IAR is not perpetually verifiable across Agent key rotation the way a KEL-anchored or registry-backed issuance is. The Citizen later presents that signed receipt to an Issuing Agent (or other State Verifier) over IPEX. The State already has a copy of the receipt from the Proofing Agent out of band and re-verifies the challenge anchor—and the Agent signature against the Agent key state it trusts for that session—before issuing Core entitlements.
+
+The Citizen anchors the challenge:
+
+```python
+from keri import Vrsn_2_0
+
+challengeEvent = citizen.interact(
+    data=[dict(nd=challenge)],
+    framed=True,
+    gvrsn=Vrsn_2_0,
+)
+```
+
+The Proofing Agent builds the IAR with that challenge as `uuid` and endorses it. There is no `rd` and no `Registrar.issue`:
+
+```python
+from keri.acdc import acdcmap
+
+iar = acdcmap(
+    israid=proofer.pre,
+    uuid=challenge,
+    schema=IarSchemaSaid,
+    attribute=iarAttribute,  # i = Citizen; proven attributes
+)
+signedIar = proofer.endorse(serder=iar, framed=False, gvrsn=Vrsn_2_0)
+```
+
+The Citizen then presents the signed receipt. This exchange opens on grant as an `xip` (no apply, offer, or agree in the running path):
+
+```python
+grant, grantAtc = ipexGrant(
+    hab=citizen,
+    recp=verifier.pre,           # Issuing Agent or State Verifier
+    message="Present signed identity assurance receipt",
+    origin=signedIar,            # IAR plus Proofing Agent signature
+)
+admit, admitAtc = ipexAdmit(
+    hab=verifier,
+    message="Identity assurance receipt received",
+    grant=grant,
+)
+```
+
+The granted IAR body (same as the Identity Assurance Receipt ACDC Example):
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAMR.',
+  't': 'acm',
+  'd': 'EByqzW5jFrrXhC_b9jYkHJaWAoc3L5GTqmmWUnq4KGQ9',
+  'u': '0ABndXlzZWRpY2hhbGxlbmdl',
+  'i': 'EAgq2LY03zk9NUempbqdLzG4PiGnmVMqTD0DfrY9Whwh',
+  's': 'EFAB6k77bXHs6bg9PORW7UYF79GD_OuEcEjmBpwhcfRN',
+  'a':
+  {
+    'd': 'EM6r7vSi3Egpp0KB5O6WjB2g-wfwLey1J_NI3K1vJ_PR',
+    'i': 'EDB8gKNwzurf33pV2hsyGR9XFOmitDhc0LUzDamcU2JR',
+    'givenName': 'Guy',
+    'middleName': 'Marty McFly',
+    'familyName': 'Brown',
+    'nameSuffix': 'Jr',
+    'birthDate': '2002-08-22T00:00:00.000000+00:00',
+    'facialImageProof': 'EIQw_2CqmmC96YYUFXTW8XSkLQU2-v9bDCyItazmKhTW',
+    'legalPresenceStatus': 'citizen',
+    'residence':
+    {
+      'street': '157 E 300 N',
+      'city': 'Beaver',
+      'county': 'Beaver',
+      'state': 'Utah',
+      'postcode': '84713',
+      'country': 'United States'
+    },
+    'proofingDatetime': '2026-09-01T09:30:00.000000+00:00',
+    'sediURL': 'https://example.com/sedi/here'
+  }
+}
+```
+
+### Example 3: Core Identity issuance
+
+This third example is the issuance that follows a verified IAR. Issuing Agent A issues a Core Identity ACDC to the Citizen. Disclosure is full: the Citizen already knows the attributes and must read the whole credential before accepting it. Offer and agree still run so the Citizen can confirm that the Issuing Agent got those attributes right. Issuing Agent A is the Discloser; the Citizen is the Disclosee. The grant carries the Core with its issuance-registry proof, plus Issuing Agent A and Organizational Unit as supporting artifacts along the chain of authority from Example 1.
+
+The Issuing Agent opens a registrar on its entitlement registry (the registry established at the end of Example 1), issues the Core into that registry, and seals the update—the same `Registrar` pattern as in Issuance over IPEX above—yielding `proofedCore` for the grant.
+
+```python
+apply, applyAtc = ipexApply(
+    hab=citizen,
+    recp=agentA.pre,             # Issuing Agent A
+    message="Issue the Core Identity credential",
+    modifiers=dict(dp=[[
+        [CoreSchemaSaid, "/", [""]],
+        [AgentSchemaSaid, "/e/utahAgent/_/", [""]],
+        [UnitSchemaSaid, "/e/utahAgent/_/e/orgUnit/_/", [""]],
+    ]]),
+    ax=[True],
+)
+offer, offerAtc = ipexOffer(
+    hab=agentA,
+    message="Offer the Core Identity credential",
+    origin=core,                 # issued Core ACDC
+    artifacts=[agent, unit],     # full origin plus authority-chain nodes
+    apply=apply,
+    ax=[True],
+)
+agree, agreeAtc = ipexAgree(
+    hab=citizen,
+    message="Agree to the Core Identity credential",
+    offer=offer,
+)
+grant, grantAtc = ipexGrant(
+    hab=agentA,
+    recp=citizen.pre,
+    message="Grant the Core Identity credential",
+    origin=proofedCore,          # Core plus registry proof
+    artifacts=[proofedAgent, proofedUnit],
+    agree=agree,
+    ax=[True],
+)
+admit, admitAtc = ipexAdmit(
+    hab=citizen,
+    message="Core Identity credential received",
+    grant=grant,
+)
+```
+
+The offered and granted Core body (same as the Core Identity ACDC Example):
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAfN.',
+  't': 'acm',
+  'd': 'EGsPyGCyHtDSWP61rVsRh3F8qooP_jrX6qPHqHn7-FOg',
+  'u': '0ABQNZNkD1y0W4mglDB4ei5Y',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'rd': 'EDOfxmEeOsWdi5ZQyuy98W4s15vmV1RWVFuqm4GZflTn',
+  's': 'EN0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY-',
+  'a':
+  {
+    'd': 'EPIuMf4tkzdqVMSuq59rBD14LZpmFtFjhnh8Io1BWdbt',
+    'u': '0ACd8yXBMGBLNDwr-MMgtris',
+    'i': 'EDB8gKNwzurf33pV2hsyGR9XFOmitDhc0LUzDamcU2JR',
+    'rd': 'ELUW5D0X0pMFM30ZHZKB997lad86PISushrKkKzlhQrl',
+    'primary': True,
+    'givenName':
+    {
+      'd': 'EBu_EdUcstZq6woZ7NMe2pyU7jjcQOdC9w1ryHa1P_Sq',
+      'u': '0ADGYtYEzEdGpaq_sDXwamDm',
+      'value': 'Guy'
+    },
+    'middleName':
+    {
+      'd': 'EOhalIHhb5ZbrJZ5SMY_vWBj2ds_z9W8mJ3j-FTjgSUz',
+      'u': '0ACEZIR6pk97xr2cy-gBdod4',
+      'value': 'Marty McFly'
+    },
+    'familyName':
+    {
+      'd': 'EDBg78wYuNEQkcv-XciKFkxDQmRvIeTsXfjVMJLtUjYW',
+      'u': '0ACUdqI4OVtXDL5BBO13QdrJ',
+      'value': 'Brown'
+    },
+    'nameSuffix':
+    {
+      'd': 'EFDPwXKE-3wg-WTUVu4GWfMeu4bj8rGNkvdFrMo4Ja4N',
+      'u': '0ACXabyEAzJ1U-4qOek3adv5',
+      'value': 'Jr'
+    },
+    'birthDate':
+    {
+      'd': 'EMGKn6dwPJMd79vWaGEv7OlCQQ0oGd0nt0fRqBfz1ZyA',
+      'u': '0ABR4UtpgSSmCSVF1eNJ6joz',
+      'value': '2002-08-22T00:00:00.000000+00:00'
+    },
+    'facialImageProof':
+    {
+      'd': 'EInFQsE3pfRWQp3KrpH91f7YMCR2wslrTOTKL5SF6_E7',
+      'u': '0ABqxMB1vXX4RL4tFUOLzn8y',
+      'value': 'EIQw_2CqmmC96YYUFXTW8XSkLQU2-v9bDCyItazmKhTW'
+    },
+    'legalPresenceStatus':
+    {
+      'd': 'EMfOp3-Dd1ZXSDUHNWE4ohAsU0Qp8tfQV_gUYKSJE7-Q',
+      'u': '0AAvTJo84OMiipKf_90mn7bZ',
+      'value': 'citizen'
+    },
+    'issuedDate':
+    {
+      'd': 'EFkQuDu6twqFQ3GdSpK-jxKRYsxxCx-iSbh9RMbTbIsE',
+      'u': '0ACqPN2zhcII6TVGRKYC1ckJ',
+      'value': '2020-08-22T00:00:00.000000+00:00'
+    },
+    'expirationDate':
+    {
+      'd': 'EOjYb0hwGBe1rA0Ui8foLMoCu5lItuhnodomghuyY4r9',
+      'u': '0AAfMYErqhjBCf4cgG5huzT2',
+      'value': '2028-09-01T00:00:00.000000+00:00'
+    }
+  },
+  'e':
+  {
+    'd': 'EFwdv1MuJAVYnyuhee0kAjDIpF44oFn5oFo9xoVwtId1',
+    'u': '0AADjz761fupJiCvj4GWFBfg',
+    'utahAgent':
+    {
+      'd': 'EIh9Bz0kGwGyfDbDe42W1zA9Ukj2DuH-95eebY57ctI6',
+      'u': '0AAsHaHfgfNEaRuRwI1Y77ry',
+      'n': 'EOD4QiWo1oa6UtiEr456Lu0ba3v1Cmd6qOPoRbAdx2hD',
+      's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+      'o': 'DI2I'
+    }
+  },
+  'r':
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX',
+    'l': ''
+  }
+}
+```
+
+Issuing Agent A and the Organizational Unit travel as supporting artifacts—the same bodies as in Example 1. The Core's `rd` is Issuing Agent A's entitlement registry from the end of Example 1.
+
+### Example 4: Name and over-13 presentation
+
+This fourth example is a presentation. A Verifier asks a Citizen to prove given name and that they are over 13. The Citizen already holds a Core Identity ACDC and an Age ACDC issued by Issuing Agent A. Age is the origin of the disclosure DAG: its `coreIdentity` edge links to Core with operators `E1E`, `DI1I`, and `NI2I`, so presenting Age already reaches Core and does not need a bespoke ACDC. Issuing Agent A is absent from the exchange. Disclosure is partial: the grant expands only `over13` in the Age aggregate and only `givenName` in the nested Core.
+
+Before the grant, the Citizen builds those selective variants with `Aggor` and `Compactor` from `keri.core`, then rebuilds each ACDC so the top-level SAID stays the same as the issued credential. Aggregate elements are indexed from 1 (`over13` is index 4 in the Age AEL). Attribute blocks collapse to digests, then the disclosed field is restored inline.
+
+```python
+from keri import Vrsn_2_0
+from keri.acdc import acdcagg, acdcmap
+from keri.core import Aggor, Compactor, messagize
+from keri.core.coring import Kinds
+
+# Age: disclose only over13 (AEL index 4); every other element stays its SAID.
+aggor = Aggor(ael=list(age.sad["A"]), makify=False, kind=Kinds.json)
+disclosedAge, _ = aggor.disclose(indices=[4])
+selectiveAge = acdcagg(
+    israid=age.israid,
+    uuid=age.sad["u"],
+    regid=age.sad["rd"],
+    schema=age.sad["s"],
+    aggregate=disclosedAge,
+    edge=age.sad["e"],
+    rule=age.sad["r"],
+    kind=Kinds.json,
+)
+
+# Core: collapse attributes, then expand only givenName.
+compactor = Compactor(mad=dict(core.sad["a"]), makify=True, kind=Kinds.json)
+compactor.compact()
+compactor.expand(greedy=True)
+coreAttributes = dict(compactor.partials[("",)].mad)
+coreAttributes["givenName"] = dict(core.sad["a"]["givenName"])
+selectiveCore = acdcmap(
+    israid=core.israid,
+    uuid=core.sad["u"],
+    regid=core.sad["rd"],
+    schema=core.sad["s"],
+    attribute=coreAttributes,
+    edge=core.sad["e"],
+    rule=core.sad["r"],
+    kind=Kinds.json,
+)
+```
+
+Negotiate the disclosure plan first. Aggregate paths use the element index (`A/4/over13`):
+
+```python
+apply, applyAtc = ipexApply(
+    hab=verifier,
+    recp=citizen.pre,
+    message="Prove given name and over-13",
+    modifiers=dict(dp=[[
+        [AgeSchemaSaid, "/", ["A/4/over13"]],
+        [CoreSchemaSaid, "/e/coreIdentity/_/", ["a/givenName/"]],
+        [AgentSchemaSaid, "/e/coreIdentity/_/e/utahAgent/_/", []],
+        [UnitSchemaSaid, "/e/coreIdentity/_/e/utahAgent/_/e/orgUnit/_/", []],
+    ]]),
+    ax=[True],
+)
+offer, offerAtc = ipexOffer(
+    hab=citizen,
+    message="Offer given name and over-13",
+    origin=age,                  # issued Age ACDC
+    apply=apply,
+    ax=[True],
+)
+agree, agreeAtc = ipexAgree(
+    hab=verifier,
+    message="Agree to given name and over-13",
+    offer=offer,
+)
+```
+
+The Core attribute block declares a presentation registry (`a.rd`). On presentation the Verifier requires proof against that registry as well as the Issuer's issuance-registry proof. After agree, build a draft grant (same SAID as the final grant), call `Registrar.present`, seal that update in the Holder's KEL, then attach both proofs on the final grant:
+
+```python
+from keri.core import SealEvent, SerderKERI, messagize
+import keri.help.helping as helping
+
+stamp = helping.nowIso8601()
+draftGrant, _ = ipexGrant(
+    hab=citizen,
+    recp=verifier.pre,
+    message="Present given name and over-13",
+    origin=selectiveAge,
+    artifacts=[selectiveCore, agent, unit],
+    agree=agree,
+    dt=stamp,
+    ax=[True],
+    anchorers=[],
+)
+presentationProof, presented = holderRegistrar.present(
+    presentationRegistry,
+    grant=draftGrant,
+)
+presentedAnchor = citizen.interact(
+    data=[dict(i=presentationRegistry.regk, s=presented.sad["n"], d=presented.said)],
+    framed=True,
+    gvrsn=Vrsn_2_0,
+)
+presentationRegistry.anchorMsg(presented.said)
+
+anchor = SerderKERI(raw=presentedAnchor)
+proofedAge = messagize(serder=selectiveAge, bonds=[ageProof.data], framed=False, gvrsn=Vrsn_2_0)
+proofedCore = messagize(
+    serder=selectiveCore,
+    bonds=[
+        coreProof.data,
+        presentationProof.data,
+        SealEvent(i=citizen.pre, s=anchor.snh, d=anchor.said),
+    ],
+    framed=False,
+    gvrsn=Vrsn_2_0,
+)
+grant, grantAtc = ipexGrant(
+    hab=citizen,
+    recp=verifier.pre,
+    message="Present given name and over-13",
+    origin=proofedAge,           # selective Age plus issuance-registry proof
+    artifacts=[proofedCore, proofedAgent, proofedUnit],
+    agree=agree,
+    dt=stamp,
+    ax=[True],
+    anchorers=[],
+)
+admit, admitAtc = ipexAdmit(
+    hab=verifier,
+    message="Given name and over-13 received",
+    grant=grant,
+)
+```
+
+The Citizen already holds the issued Age ACDC from the Age ACDC Example. The grant delivers a selective variant of that same credential: the AGID stays, `over13` is expanded, and every other aggregate element is its digest.
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAWG.',
+  't': 'acg',
+  'd': 'ECfZCyLfleF3zA8qsHJ0WZYXW5xyR-aPDC8dl6RfLd27',
+  'u': '0AA-hoK5ewZYxB5hXEMwxq5X',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'rd': 'ED69oluOxaPx6sNYF6w2qklDrOu21WAOHv5NK25D4lUg',
+  's': 'EPqXrwPT6b0_KghrrMuIdmuD68Aytv1XK6jU86EumgJV',
+  'A':
+  [
+    'EKpXUDp6DObtMdVDmHV4YydNCjUrlfQyxQt88jrxJ88X',
+    'EDA6IJUQ__dJgXgYiLfreRLsEm1-5xNqBiOIc5sCFful',
+    'EHFHaihQnDcyQ2Oj_rPhl6-f30RdUrdT9LUni53B0iyl',
+    'ENP5C_6TsmE_KYx8DAvOtUvlsTB4PwBo8MAUXIEEi0Ck',
+    {
+      'd': 'EJdPqE-rEP1NKS4JD_gUhkJOKcQl5OnYbgph8hsxtZtr',
+      'u': '0ABnfpH75cVvRDh0giU6e1mn',
+      'over13': True
+    },
+    'EPCejGeNknpUDiLJRaCjRmSeGEzroi1Q0JwRyvJ7xP_V',
+    'EPfmjyv4bV4Ik52AhOY_ifttEH8rTKveZNZCra3-1fqV',
+    'EI0E1JC9Bx71cWfVNdYDcKBnfTqpivOc4WVi8h8VS9Qs',
+    'EBfwq_wksugRyl-ov5BavfsCA1Hl0RKbuOpjbKDi_VdQ',
+    'EGBj6JpQpsU12XCJqGJPu_JYohubd5kQdvvLN54qUaAN',
+    'EL5jXoUIxAYsWapoisXX9icDUxW3zBnFaWpJ5UYHW7yU',
+    'EBgZxdd19DGZ4XYpdDfWrTtDF0HNpnkyJNoAXpCkAUWf',
+    'EBz1eWrprA7WneGEZQ6DZB3iaZIgBWbS7-clMPL_IAnU',
+    'ED1_JpPfZ9pzBpQnJo4ckUhg-Z-TImSp-8mwqzAFQtF9',
+    'EMVqcI3h7RMznAX9HaJoeyB8sDHhB9bvdcwHjhRPLvQy'
+  ],
+  'e':
+  {
+    'd': 'EOYHSibcRhHNX_hYm_vBXd1KbDWiVkH5jd7ILEV4QyHV',
+    'u': '0ACyPy93wKHIWAvzu92ooj2c',
+    'coreIdentity':
+    {
+      'd': 'EJA7mNbo51gVlMGjFceykFSrkxPkykLd0n7yFvUlxd86',
+      'u': '0AAYbJl5lc9BwGOLiIaQVWQ8',
+      'n': 'EGsPyGCyHtDSWP61rVsRh3F8qooP_jrX6qPHqHn7-FOg',
+      's': 'EN0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY-',
+      'o': ['E1E', 'DI1I', 'NI2I']
+    }
+  },
+  'r':
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX',
+    'l': ''
+  }
+}
+```
+
+The nested Core artifact is a selective variant of the Core Identity ACDC Example. Only `givenName` is expanded; the other independently saidified attribute blocks are their digests.
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAWo.',
+  't': 'acm',
+  'd': 'EGsPyGCyHtDSWP61rVsRh3F8qooP_jrX6qPHqHn7-FOg',
+  'u': '0ABQNZNkD1y0W4mglDB4ei5Y',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'rd': 'EDOfxmEeOsWdi5ZQyuy98W4s15vmV1RWVFuqm4GZflTn',
+  's': 'EN0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY-',
+  'a':
+  {
+    'd': 'EPIuMf4tkzdqVMSuq59rBD14LZpmFtFjhnh8Io1BWdbt',
+    'u': '0ACd8yXBMGBLNDwr-MMgtris',
+    'i': 'EDB8gKNwzurf33pV2hsyGR9XFOmitDhc0LUzDamcU2JR',
+    'rd': 'ELUW5D0X0pMFM30ZHZKB997lad86PISushrKkKzlhQrl',
+    'primary': True,
+    'givenName':
+    {
+      'd': 'EBu_EdUcstZq6woZ7NMe2pyU7jjcQOdC9w1ryHa1P_Sq',
+      'u': '0ADGYtYEzEdGpaq_sDXwamDm',
+      'value': 'Guy'
+    },
+    'middleName': 'EOhalIHhb5ZbrJZ5SMY_vWBj2ds_z9W8mJ3j-FTjgSUz',
+    'familyName': 'EDBg78wYuNEQkcv-XciKFkxDQmRvIeTsXfjVMJLtUjYW',
+    'nameSuffix': 'EFDPwXKE-3wg-WTUVu4GWfMeu4bj8rGNkvdFrMo4Ja4N',
+    'birthDate': 'EMGKn6dwPJMd79vWaGEv7OlCQQ0oGd0nt0fRqBfz1ZyA',
+    'facialImageProof': 'EInFQsE3pfRWQp3KrpH91f7YMCR2wslrTOTKL5SF6_E7',
+    'legalPresenceStatus': 'EMfOp3-Dd1ZXSDUHNWE4ohAsU0Qp8tfQV_gUYKSJE7-Q',
+    'issuedDate': 'EFkQuDu6twqFQ3GdSpK-jxKRYsxxCx-iSbh9RMbTbIsE',
+    'expirationDate': 'EOjYb0hwGBe1rA0Ui8foLMoCu5lItuhnodomghuyY4r9'
+  },
+  'e':
+  {
+    'd': 'EFwdv1MuJAVYnyuhee0kAjDIpF44oFn5oFo9xoVwtId1',
+    'u': '0AADjz761fupJiCvj4GWFBfg',
+    'utahAgent':
+    {
+      'd': 'EIh9Bz0kGwGyfDbDe42W1zA9Ukj2DuH-95eebY57ctI6',
+      'u': '0AAsHaHfgfNEaRuRwI1Y77ry',
+      'n': 'EOD4QiWo1oa6UtiEr456Lu0ba3v1Cmd6qOPoRbAdx2hD',
+      's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+      'o': 'DI2I'
+    }
+  },
+  'r':
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX',
+    'l': ''
+  }
+}
+```
+
+Issuing Agent A and the Organizational Unit travel as supporting artifacts along the `utahAgent` and `orgUnit` edges—the same bodies as in Example 1.
+
+### Example 5: Guardianship social-media presentation
+
+A *bespoke* ACDC is a self-issued credential that gathers other already-issued ACDCs under one DAG origin. The Holder issues it to itself; its edges name the credentials to present together. Signing that origin authenticates the whole presentation. Example 4 did not need one: Age already edged to Core, so Age alone could be the origin. Here Age and Social do not share a single leaf origin, so the Ward issues a bespoke to bind them. That makes the exchange issuance and presentation at once—the Ward issues the bespoke and presents credentials others already issued.
+
+This example is that pattern for social-media onboarding. A Verifier (a social platform) asks a Ward to prove that they are over 13 and that a Guardian has authorized social-media access. The Ward's bespoke has `I2I` edges to an Age ACDC and a Social Access Authorization ACDC. Age was issued by Issuing Agent B—its edges carry both `coreIdentity` (`E1E`, `NI2I`) and a separate `utahAgent` (`DI2I`) because Issuing Agent B is not the Issuer of the Ward's Core. Social was issued by the Guardian and edges to the Guardian ACDC. Those Issuers are absent from the exchange. Disclosure of Age is partial (`over13` only); Social is full.
+
+Before the IPEX exchange, the Ward builds that bespoke ACDC. Issuer and Issuee are both the Ward. The edges name the Age and Social credentials already held, with `I2I` so signing the origin counts as proof of control wherever the Ward appears as Issuee in the resulting DAG. There is no issuance registry on this bespoke.
+
+```python
+from keri.acdc import acdcmap
+
+bespoke = acdcmap(
+    israid=ward.pre,
+    uuid=bespokeUuid,
+    schema=BespokeSchemaSaid,
+    attribute=bespokeAttribute,  # i = Ward
+    edge=bespokeEdge,            # age and social with o = I2I
+    rule=bespokeRule,
+)
+```
+
+Age on the grant is again a selective variant via `Aggor.disclose(indices=[4])` and `acdcagg`, then `messagize` with its registry proof—the same pattern as Example 4, including the draft-grant presentation-registry proof when Core declares `a.rd`. Social and the supporting chain artifacts travel full with their proofs. The Unit node appears once in the plan (both Agent edges reach the same Organizational Unit).
+
+The IPEX exchange then uses that `bespoke` as the origin. The `q.dp` triples follow breadth-first order from that origin:
+
+```python
+apply, applyAtc = ipexApply(
+    hab=verifier,
+    recp=ward.pre,
+    message="Prove over-13 and guardian social authorization",
+    modifiers=dict(dp=[[
+        [BespokeSchemaSaid, "/", [""]],
+        [AgeSchemaSaid, "/e/age/_/", ["A/4/over13"]],
+        [SocialSchemaSaid, "/e/social/_/", [""]],
+        [CoreSchemaSaid, "/e/age/_/e/coreIdentity/_/", []],
+        [AgentSchemaSaid, "/e/age/_/e/utahAgent/_/", []],
+        [GuardianSchemaSaid, "/e/social/_/e/guardian/_/", []],
+        [AgentSchemaSaid, "/e/age/_/e/coreIdentity/_/e/utahAgent/_/", []],
+        [UnitSchemaSaid, "/e/age/_/e/utahAgent/_/e/orgUnit/_/", []],
+    ]]),
+    ax=[True],
+)
+offer, offerAtc = ipexOffer(
+    hab=ward,
+    message="Offer over-13 and guardian social authorization",
+    origin=bespoke,              # Ward-issued bespoke ACDC
+    apply=apply,
+    ax=[True],
+)
+agree, agreeAtc = ipexAgree(
+    hab=verifier,
+    message="Agree to over-13 and guardian social authorization",
+    offer=offer,
+)
+grant, grantAtc = ipexGrant(
+    hab=ward,
+    recp=verifier.pre,
+    message="Present over-13 and guardian social authorization",
+    origin=bespoke,
+    artifacts=[proofedAge, proofedSocial, proofedCore, proofedAgentB,
+               proofedGuardian, proofedAgentA, proofedUnit],
+    agree=agree,
+    ax=[True],
+)
+admit, admitAtc = ipexAdmit(
+    hab=verifier,
+    message="Over-13 and guardian social authorization received",
+    grant=grant,
+)
+```
+
+The offered and granted bespoke body (same as the Bespoke Combined Presentation ACDC Example for Age and Social Access):
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAMx.',
+  't': 'acm',
+  'd': 'EACZWEWeUKMw0d59M30OmlxpQfxUK0_OW9FkUT25iokI',
+  'u': '0AARpi9PM79plQI-rP2enPXJ',
+  'i': 'EKr8JLtfqWCmHrxO3yu8ocS2n9o0Tlspeaqm9ZOf3FM1',
+  's': 'EGcqmkrnaQz8F1PEekLOaySiW-uDaJ0SfoqtSuqCvEif',
+  'a':
+  {
+    'd': 'EP9aY5tjVfzqV3CCyB3KnIGRPKuB_NO9ajAFYKOC20cN',
+    'u': '0AAJsl8NNe3Ajs_GDdxw_Ilb',
+    'i': 'EKr8JLtfqWCmHrxO3yu8ocS2n9o0Tlspeaqm9ZOf3FM1'
+  },
+  'e':
+  {
+    'd': 'EGZ-MGre9h06zXulltjEHc7z_mEmJD3kN_3Df9eMV8Kw',
+    'u': '0ADQOM8dUNGQqnaYrpQUeZxO',
+    'age':
+    {
+      'd': 'EM0ZAhNU3fEqMlLD5iHYz24Bv0EuMjJxsXGnsHsci5Fc',
+      'u': '0AD_tiK8iw7ZQNWgsq9gKaHt',
+      'n': 'EJICGrKf1Lr1xg0EwSFViU_hJALJQcZSyI9gKk1tEkMr',
+      'o': 'I2I'
+    },
+    'social':
+    {
+      'd': 'EKYgLtmuXOimgfRGVDiTJSFKbWuSUjHs_KXW0PDwA2sO',
+      'u': '0AAmaC3QZgvoFtw1TlCLc6Gz',
+      'n': 'EGdxe5u7SRt__mJBvjRc0LdJycRDYgdnrjwdce9UQDE6',
+      'o': 'I2I'
+    }
+  },
+  'r':
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX',
+    'l': ''
+  }
+}
+```
+
+The Age artifact is the Ward's Age ACDC issued by Issuing Agent B—not the Age ACDC Example from earlier, which belongs to a different citizen. The grant delivers a selective variant: the AGID stays, `over13` is expanded, and every other aggregate element is its digest.
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAZQ.',
+  't': 'acg',
+  'd': 'EJICGrKf1Lr1xg0EwSFViU_hJALJQcZSyI9gKk1tEkMr',
+  'u': '0ACSnRu5PiBZMyB50AN44tEp',
+  'i': 'EDOP0lrGzY0VdsRfbcLhOTYw0yrYrtglnGoJsScZtY5o',
+  'rd': 'ELm6OhvWprcGl8Ej8rpJXivzAl0NwaVpvwI8V7REHZMm',
+  's': 'EPqXrwPT6b0_KghrrMuIdmuD68Aytv1XK6jU86EumgJV',
+  'A':
+  [
+    'EIPO23PM9_b4wUpdpwnoxSKBtGGHvm5YO7t4EjIeVh_Z',
+    'EO53F7u9zm9roH3rgWgjJohNL8VzlNQGsie1atnaQsdP',
+    'EOQga9SaHyDpwb8f2XvhqWfejRouZHA3KLuxdrqeNtK3',
+    'ECB_ezwmrjcvRZbykmM458DO8qlWvLw7UrpLq9bkvZV4',
+    {
+      'd': 'EHjgkUAZWkp90GfZLvHNrA74-AAOFs6YhFZLStRqgPUB',
+      'u': '0ADT7b7aBOOKdfNKM0ZLl7BN',
+      'over13': True
+    },
+    'EI6rnufZXaz_WxSz3SH0EmOOyBGvJv81sf_A0uaiKxA1',
+    'EHGppZcHnAW2qGJJf4KFe__ARGhJ958wh8GArL52fLZh',
+    'EOllczPHC788VO_ZiNV1TXeMKCIplYJH_CFrvcDkLIIL',
+    'EEVaUQ3hdlY9bGMYvXpkiVjf5VVCFgEXwGul2F86FJHo',
+    'EOiZX5TSf-7ezQ88d40VJQ7biTCwwC5DVXLjLl9cVcvG',
+    'EIzeIUdqSs6OWe7zUMRktw8JMoJ-hQcQ7CZA_HrDcILm',
+    'EHLet8Ng_S7kJ6iI1DhJCkSqjZDHD_2Tf3Hn9m9FhL_z',
+    'EFaEbM5zI82fJzxDrllfnxOeJ2IOWorZShrpFcbmEPIv',
+    'EHcRkXAi6pGFqIniH2fzts9rYbkPptMtwiq1mLVfnDkh',
+    'ED83kXhYQ-fj4xriPLDWz_cGoNKHKM3QQGP_DVBYhfuM'
+  ],
+  'e':
+  {
+    'd': 'EKQfczAVgMFt60mEixrV9vCsH284MRJKJWlXREoZuC7S',
+    'u': '0AACOqJbUj6MqveA0RUh73oY',
+    'coreIdentity':
+    {
+      'd': 'EBusC04-2smPO86wPygmOHJTE99WyvKN9pd0HT6ckLyf',
+      'u': '0AA2_L2W6EjB9riVG-OLJd7d',
+      'n': 'EO2_WbE5hiB3HpwD2XDQShBDXSLsh7cYaIil_pWOBplX',
+      's': 'EN0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY-',
+      'o': ['E1E', 'NI2I']
+    },
+    'utahAgent':
+    {
+      'd': 'ELbKSu1lgOexHivhTSJ_OXYgT4orToawWES-Z-6jj1Wt',
+      'u': '0AD210K_-b2iSmSksdKHRMsM',
+      'n': 'EB4QhQdELR7HN6ACcRc-OeOa1x-AsXicNwXOXzZ4r5LC',
+      's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+      'o': 'DI2I'
+    }
+  },
+  'r':
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX',
+    'l': ''
+  }
+}
+```
+
+The Social artifact is the full Social Access Authorization ACDC Example. The Guardian ACDC, the Ward's Core Identity ACDC Example (Citizen as Ward), Issuing Agent B (for Age), Issuing Agent A (for Guardian), and the Organizational Unit travel as supporting artifacts along the `guardian`, `coreIdentity`, `utahAgent`, and `orgUnit` edges.
